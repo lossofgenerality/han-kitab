@@ -519,7 +519,9 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
   $('#askForm').onsubmit = async (e) => {
     e.preventDefault(); const q = $('#askIn').value.trim(); if (!q) return; $('#askIn').value = '';
     addMsg('me', q);
-    const hits = search(q.replace(/[?？!.,，。]/g, ' ').split(/\s+/).filter((w) => w.length > 3 || /[㐀-鿿]/.test(w)).slice(0, 4).join(' ') || q, 6);
+    const STOP = new Set('a an and are as at be by did do does for from had has have how in is it its of on or that the this to was were what when where which who whom why with about tell me please'.split(' '));
+    const kw = q.replace(/[?？!.,，。:;'"“”‘’()]/g, ' ').split(/\s+/).filter((w) => w && !STOP.has(w.toLowerCase()) && (w.length > 1 || /[\u3400-\u9fff]/.test(w))).slice(0, 6);
+    const hits = search(kw.join(' ') || q, 6, kw.length > 1);
     if (!CCN) {
       if (!hits.length) { addMsg('bot', 'I found no passage for that. Try other words, or connect a CCN Cloud key for a written answer.'); return; }
       addMsg('bot', 'Passages from the texts:\n\n' + hits.slice(0, 4).map((h) => `• ${h.t.slice(0, 420)}${h.t.length > 420 ? '…' : ''}\n   (${DOCS.find((d) => d.id === h.doc).title} · ${h.title})`).join('\n\n'));

@@ -94,6 +94,7 @@ T = [  # (index, file, u, x, v, y, why)
  ("T041", "app files", "OUT = ", 'f"HanKitab_{VERSION}.html"', "", '"index.html"', 'editor: no app versioning; one fixed URL, overwritten each time. HanKitab_v001.html removed; template and builder renamed app_template.html, make_app.py'),
  ("T043", "tools/app_template.html", "", "the About line on Ask answers, the AI/Claude/Anthropic wording in Ask, the MODEL setting and the credit title", "", "(removed; neutral wording: 'Connected to CCN Cloud.'; the kernel chooses the model)", 'editor request; the guide still answers honestly if asked whether it is a person'),
  ("T044", "tools/app_template.html", "DOCS.forEach((d) => {\n", "", "      const h = ...getElementById(d.tpl)", "      if (!d.tpl) return;\n", 'search and Ask failed (null template) once the facsimile was added; found in the live test DO010[2]'),
+ ("T045", "tools/app_template.html", "const hits = search(", "words longer than 3 letters, all required", ", 6);", "key words without stop-words (Liu, Zhi kept), any may match", 'Ask found no passage for "Who was Liu Zhi?" (DO010[3])'),
  ("T042", "sw.js", "const VERSION = '", "hankitab-v002", "';", "hankitab-<sha1 of index.html, 10 hex>", 'cache name set automatically by make_app.py'),
 ]
 DO = [  # (index, what, [(iteration, result)], record)
