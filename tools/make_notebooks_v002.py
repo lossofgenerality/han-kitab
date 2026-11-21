@@ -107,6 +107,7 @@ DO = [  # (index, what, [(iteration, result)], record)
  ("DO007", "app headless browser tests (Chrome, localhost)", [("1", "#library: renders, no console errors"), ("2", "#read/mason"), ("3", "#read/facs: viewer at 卷一 p. 51"), ("4", "#downloads: 5 rows with sizes"), ("5", "#read/mason/par: English + page viewer"), ("6", "390×844 mobile: facsimile readable")], "records/06_app_screens_v001.png"),
  ("DO009", "HanKitabKernel v002 tests", [("1", "status without key: chat_ready True, open_chat True"), ("2", "wolfram 1+1 without key: refused"), ("3", "wolfram 1+1 with secret: 2"), ("4", "chat without key: answer received")], "records/07_kernel_v002_tests_v001.md"),
  ("DO010", "live page test, v002 (GitHub Pages, built-in browser)", [("1", "status: Connected, no key box"), ("2", "Ask failed: null template -> T044"), ("3", "no passages -> T045"), ("4", "answer citing the report"), ("5", "Search Black Stone: 11"), ("6", "7 downloads: 200"), ("7", "no Claude/Anthropic in the page")], "records/08_live_v002_test_v001.md"),
+ ("DO011", "own chat key", [("1", "HanKitab/apikey stored, owner-only"), ("2", "open chat answered using it")], "records/09_own_chat_key_v001.md"),
  ("DO008", "facsimile PDF build", [("1", "img2pdf from PNG: 297 pp., 18.0 MB"), ("2", "CCITT G4 TIFF: 297 pp., 10.7 MB")], "texts/TianfangZhishengShilu_1924_facsimile_v001.pdf"),
 ]
 cells = [cell("Han Kitab · Operations Log v002", "Title"),
