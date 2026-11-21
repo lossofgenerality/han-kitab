@@ -92,6 +92,7 @@ T = [  # (index, file, u, x, v, y, why)
  ("T039", "tools/app_template_v002.html", "new URLSearchParams(", "{ key: ccnKey, ...params }", ")", "params", 'no key sent'),
  ("T040", "sw.js, manifest.webmanifest, index.html", "HanKitab_", "v001", ".html", "v002", 'point installs and the redirect at the v002 app; cache hankitab-v002'),
  ("T041", "app files", "OUT = ", 'f"HanKitab_{VERSION}.html"', "", '"index.html"', 'editor: no app versioning; one fixed URL, overwritten each time. HanKitab_v001.html removed; template and builder renamed app_template.html, make_app.py'),
+ ("T043", "tools/app_template.html", "", "the About line on Ask answers, the AI/Claude/Anthropic wording in Ask, the MODEL setting and the credit title", "", "(removed; neutral wording: 'Connected to CCN Cloud.'; the kernel chooses the model)", 'editor request; the guide still answers honestly if asked whether it is a person'),
  ("T042", "sw.js", "const VERSION = '", "hankitab-v002", "';", "hankitab-<sha1 of index.html, 10 hex>", 'cache name set automatically by make_app.py'),
 ]
 DO = [  # (index, what, [(iteration, result)], record)

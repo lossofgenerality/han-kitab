@@ -14,8 +14,8 @@ One fixed address, always the current app: https://lossofgenerality.github.io/ha
   opened at the matching juan), or 中文 alone; the 1924 facsimile page by page (◀ ▶, arrow keys, contents by juan);
   the research report. Text size, read aloud with the device's voices, PDF and Markdown links.
 - **Search** — every text at once, English or Chinese, offline.
-- **Ask** — questions about the Han Kitab, no key needed. The answer is written by an AI system through
-  HanKitabKernel, given the most relevant passages; offline, the passages themselves are shown.
+- **Ask** — questions about the Han Kitab, no key needed. Answers come through HanKitabKernel, which is given
+  the most relevant passages; offline, the passages themselves are shown.
 - **Downloads** — the editions and the unchanged original scans.
 - **Install** — Chrome/Edge: *Install app*; iPhone/iPad: Share → Add to Home Screen. Works offline once opened
   (PDFs excepted).
@@ -57,6 +57,6 @@ Logs: `wolfram/HanKitabOperationsLog_v002.nb` ((T) rewrites, (DO) runs), `wolfra
 ## Credits
 
 Principal Investigator Lucval · Oversight Directorate Zil · Editors Dara, Lucia, Zil · Software FreeFormer ·
-Agent Kirari-chan (キラリちゃん) · Programming: Hikari Noor Hoshino (星野ヌール), AI System Programmer.
+Agent Kirari-chan (キラリちゃん) · Programming: Hikari Noor Hoshino (星野ヌール).
 
 © Computational Classnotes · CC BY-NC-SA 4.0. The 1724 text, the 1921 translation and the 1924 printing are in the public domain.

@@ -5,7 +5,6 @@
 <script>
 /* Hardwired CCN Cloud settings (same shape as Tutu Cat / Laplacian Lab). The key is typed on the page. */
 window.HANKITAB_CONFIG = window.HANKITAB_CONFIG || {
-  MODEL: "claude-sonnet-5-5",
   WOLFRAM_URL: "https://www.wolframcloud.com/obj/ccn2/HanKitabKernel"
 };
 /* Read-aloud voices. The first name found on the device wins. */
@@ -194,7 +193,7 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
   <!-- ASK -->
   <section class="view" id="v-ask">
     <h1 class="page">Ask the texts</h1>
-    <p class="lede">Ask a question about the Han Kitab. Answers are written by an AI system (through HanKitabKernel), which is given the passages from these texts most relevant to your question. When you are offline, you get the matching passages themselves.</p>
+    <p class="lede">Ask a question about the Han Kitab. Answers come through HanKitabKernel, which is given the passages from these texts most relevant to your question. When you are offline, you get the matching passages themselves.</p>
     <div class="card">
       <div class="keyrow"><span id="ccnState">Connecting to CCN Cloud…</span></div>
       <div class="chat" id="log"></div>
@@ -217,10 +216,9 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
       <ul>
         <li><b>Texts:</b> the 1921 text of Mason's <i>The Arabian Prophet</i> is in the public domain; this clear-text edition and the research report are © Computational Classnotes · CC BY-NC-SA 4.0.</li>
         <li><b>Chinese originals:</b> added as clear text when made from public-domain scans. Machine-read Chinese is marked as such until it has been proofread.</li>
-        <li><b>Ask:</b> answers in the Ask tab are written by an AI system and may be wrong; check them against the texts.</li>
         <li><b>Offline:</b> once opened, the app and its texts work without a connection. Ask needs one, unless it is answering from the texts.</li>
       </ul>
-      <p>Production: Principal Investigator Lucval · Oversight Directorate Zil · Editors Dara, Lucia, Zil · Software FreeFormer · Agent Kirari-chan (キラリちゃん). Programming: Hikari Noor Hoshino (星野ヌール), AI System Programmer.</p>
+      <p>Production: Principal Investigator Lucval · Oversight Directorate Zil · Editors Dara, Lucia, Zil · Software FreeFormer · Agent Kirari-chan (キラリちゃん). Programming: Hikari Noor Hoshino (星野ヌール).</p>
       <p>Ask needs no key: anyone may ask. Answers are limited in length.</p>
       <p>Source and files: <a href="https://github.com/lossofgenerality/han-kitab">github.com/lossofgenerality/han-kitab</a></p>
     </div>
@@ -491,9 +489,9 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
 
   /* ---------- Ask: CCN Cloud chat through HanKitabKernel (same protocol as TUTUKernel) ---------- */
   const CFG = window.HANKITAB_CONFIG || {};
-  const KERNEL_URL = String(CFG.WOLFRAM_URL || ''), MODEL = String(CFG.MODEL || 'claude-sonnet-5-5');
+  const KERNEL_URL = String(CFG.WOLFRAM_URL || '');
   let CCN = false;
-  const PERSONA = 'You are the Han Kitab Guide in the Computational Classnotes Han Kitab reader. You answer questions about the Han Kitab (Chinese Islamic texts by Wang Daiyu, Ma Zhu, Liu Zhi, Ma Dexin and others), Islam in China and the texts in this app. Use the passages you are given first, say which text and section they come from, and say plainly when the passages do not answer the question. Be accurate, fair and concise. You are an AI system; if asked, say so. If someone asks whether they are talking to a person or an AI, answer honestly that this reply was written by an AI system. Give no personal details about the people who make this app; send such requests to Lucia Valente, director, lucia@compclassnotes.com. Answer in the language of the question.';
+  const PERSONA = 'You are the Han Kitab Guide in the Computational Classnotes Han Kitab reader. You answer questions about the Han Kitab (Chinese Islamic texts by Wang Daiyu, Ma Zhu, Liu Zhi, Ma Dexin and others), Islam in China and the texts in this app. Use the passages you are given first, say which text and section they come from, and say plainly when the passages do not answer the question. Be accurate, fair and concise. If someone asks whether they are talking to a person, answer honestly that they are not. Give no personal details about the people who make this app; send such requests to Lucia Valente, director, lucia@compclassnotes.com. Answer in the language of the question.';
   function b64enc(str) { const bytes = new TextEncoder().encode(str); let bin = ''; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(bin); }
   function b64dec(b) { return new TextDecoder().decode(Uint8Array.from(atob(b), (c) => c.charCodeAt(0))); }
   async function kernelCall(params) {
@@ -509,7 +507,7 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
     try {
       const j = await kernelCall({ mode: 'status' });
       if (j.chat_ready === false) { stateEl.textContent = 'Written answers are not available right now; you will get passages from the texts.'; return false; }
-      CCN = true; stateEl.textContent = 'Answers written by an AI system through CCN Cloud. Check them against the texts.'; return true;
+      CCN = true; stateEl.textContent = 'Connected to CCN Cloud.'; return true;
     } catch (e) { stateEl.textContent = 'Offline: answers are passages from the texts.'; return false; }
   }
   ccnConnect();
@@ -530,7 +528,7 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
     const ctx = hits.map((h, i) => `[${i + 1}] ${DOCS.find((d) => d.id === h.doc).title} · ${h.title}: ${h.t.slice(0, 900)}`).join('\n\n');
     convo.push({ role: 'user', content: `Passages:\n${ctx || '(none found)'}\n\nQuestion: ${q}` });
     try {
-      const j = await kernelCall({ mode: 'chat', payload_b64: b64enc(JSON.stringify({ model: MODEL, max_tokens: 1500, system: PERSONA, messages: convo.slice(-8) })) });
+      const j = await kernelCall({ mode: 'chat', payload_b64: b64enc(JSON.stringify({ max_tokens: 1500, system: PERSONA, messages: convo.slice(-8) })) });
       if (j.error) throw new Error(j.error);
       let t = b64dec(j.text_b64 || '');
       try { const o = JSON.parse(t); t = o.reply || (o.content && o.content[0] && o.content[0].text) || t; } catch (e2) {}
