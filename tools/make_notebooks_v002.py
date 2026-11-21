@@ -37,17 +37,22 @@ blocks = [b.strip() for b in wl.split("\n\n") if b.strip()]
 cells = [cell("HanKitabKernel v002", "Title"),
          cell("Wolfram Cloud chat proxy for the Han Kitab reader. Same protocol as TUTUKernel and LaplacianLabKernel (CCN Cloud Kit). Deployed at https://www.wolframcloud.com/obj/ccn2/HanKitabKernel on 21 Nov 2026. The chat key is read from the private cloud object LaplacianLab/apikey; the app key (secret) is stored privately as HanKitab/secret and in HanKitabKernel_SECRET_private.txt in the Desktop folder. Never commit the secret.", "Text")]
 for b in blocks:
+    if "CloudPut[" in b and "apikey" in b:
+        cells.append(cell("Step 1 (only if the key is not stored yet). Paste the key, evaluate once, then delete the key from this cell and save the notebook, so the key is not kept in the file.", "Text"))
     if b.startswith("(*") and b.endswith("*)"):
         cells.append(cell(b[2:-2].strip(), "Text"))
     else:
         cells.append(cell(b, "Input"))
-cells += [cell("Test (DO006)", "Section"),
-          cell('u = "https://www.wolframcloud.com/obj/ccn2/HanKitabKernel"; secret = CloudGet["HanKitab/secret"];\n'
-               'URLExecute[HTTPRequest[u, <|"Method" -> "POST", "Body" -> {"key" -> secret, "code" -> "{$VersionNumber, 1 + 1}"}|>], "RawJSON"]', "Input"),
-          cell('pl = BaseEncode[StringToByteArray[ExportString[<|"model" -> "claude-sonnet-5-5", "max_tokens" -> 1500, "system" -> "Answer in one short sentence.", "messages" -> {<|"role" -> "user", "content" -> "Who wrote 天方性理?"|>}|>, "RawJSON", "Compact" -> True]]];\n'
-               'ch = URLExecute[HTTPRequest[u, <|"Method" -> "POST", "Body" -> {"key" -> secret, "mode" -> "chat", "payload_b64" -> pl}|>], "RawJSON"];\n'
-               '{ch["stop_reason"], ByteArrayToString[BaseDecode[ch["text_b64"]]]}', "Input")]
-notebook("wolfram/HanKitabKernel_v002.nb", cells)
+cells += [cell("Tests (DO012). Each cell is self-contained; no key is needed for status and chat.", "Section"),
+          cell('u = "https://www.wolframcloud.com/obj/ccn2/HanKitabKernel";\n'
+               'URLExecute[HTTPRequest[u, <|"Method" -> "POST", "Body" -> {"mode" -> "status"}|>], "RawJSON"]', "Input"),
+          cell('u = "https://www.wolframcloud.com/obj/ccn2/HanKitabKernel";\n'
+               'pl = BaseEncode[ExportByteArray[<|"max_tokens" -> 1500, "system" -> "Answer in one short sentence.", "messages" -> {<|"role" -> "user", "content" -> "Who wrote \u5929\u65b9\u6027\u7406?"|>}|>, "RawJSON", "Compact" -> True]];\n'
+               'ch = URLExecute[HTTPRequest[u, <|"Method" -> "POST", "Body" -> {"mode" -> "chat", "payload_b64" -> pl}|>], "RawJSON"];\n'
+               'If[KeyExistsQ[ch, "text_b64"], {ch["stop_reason"], ByteArrayToString[BaseDecode[ch["text_b64"]]]}, ch]', "Input"),
+          cell('u = "https://www.wolframcloud.com/obj/ccn2/HanKitabKernel";\n'
+               'URLExecute[HTTPRequest[u, <|"Method" -> "POST", "Body" -> {"mode" -> "wolfram", "key" -> CloudGet["HanKitab/secret"], "code" -> "{$VersionNumber, 1 + 1}"}|>], "RawJSON"]', "Input")]
+notebook("wolfram/HanKitabKernel_v003.nb", cells)
 
 # ---------- 2. operations log ----------
 T = [  # (index, file, u, x, v, y, why)
@@ -95,6 +100,7 @@ T = [  # (index, file, u, x, v, y, why)
  ("T043", "tools/app_template.html", "", "the About line on Ask answers, the AI/Claude/Anthropic wording in Ask, the MODEL setting and the credit title", "", "(removed; neutral wording: 'Connected to CCN Cloud.'; the kernel chooses the model)", 'editor request; the guide still answers honestly if asked whether it is a person'),
  ("T044", "tools/app_template.html", "DOCS.forEach((d) => {\n", "", "      const h = ...getElementById(d.tpl)", "      if (!d.tpl) return;\n", 'search and Ask failed (null template) once the facsimile was added; found in the live test DO010[2]'),
  ("T045", "tools/app_template.html", "const hits = search(", "words longer than 3 letters, all required", ", 6);", "key words without stop-words (Liu, Zhi kept), any may match", 'Ask found no passage for "Who was Liu Zhi?" (DO010[3])'),
+ ("T046", "tools/make_notebooks_v002.py (kernel tests)", "pl = BaseEncode[", 'StringToByteArray[ExportString[..., "RawJSON", ...]]', "];", 'ExportByteArray[..., "RawJSON", ...]', 'test failed in the notebook: u and secret were defined in another cell, and the Chinese question was UTF-8 encoded twice; each test cell is now self-contained (HanKitabKernel_v003.nb)'),
  ("T042", "sw.js", "const VERSION = '", "hankitab-v002", "';", "hankitab-<sha1 of index.html, 10 hex>", 'cache name set automatically by make_app.py'),
 ]
 DO = [  # (index, what, [(iteration, result)], record)
@@ -108,6 +114,7 @@ DO = [  # (index, what, [(iteration, result)], record)
  ("DO009", "HanKitabKernel v002 tests", [("1", "status without key: chat_ready True, open_chat True"), ("2", "wolfram 1+1 without key: refused"), ("3", "wolfram 1+1 with secret: 2"), ("4", "chat without key: answer received")], "records/07_kernel_v002_tests_v001.md"),
  ("DO010", "live page test, v002 (GitHub Pages, built-in browser)", [("1", "status: Connected, no key box"), ("2", "Ask failed: null template -> T044"), ("3", "no passages -> T045"), ("4", "answer citing the report"), ("5", "Search Black Stone: 11"), ("6", "7 downloads: 200"), ("7", "no Claude/Anthropic in the page")], "records/08_live_v002_test_v001.md"),
  ("DO011", "own chat key", [("1", "HanKitab/apikey stored, owner-only"), ("2", "open chat answered using it")], "records/09_own_chat_key_v001.md"),
+ ("DO012", "kernel notebook tests (v003 cells, run in the local kernel)", [("1", "status"), ("2", "chat in Chinese"), ("3", "code with secret")], "records/10_kernel_notebook_tests_v001.md"),
  ("DO008", "facsimile PDF build", [("1", "img2pdf from PNG: 297 pp., 18.0 MB"), ("2", "CCITT G4 TIFF: 297 pp., 10.7 MB")], "texts/TianfangZhishengShilu_1924_facsimile_v001.pdf"),
 ]
 cells = [cell("Han Kitab · Operations Log v002", "Title"),

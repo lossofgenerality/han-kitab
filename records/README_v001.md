@@ -11,5 +11,6 @@
 | 07_kernel_v002_tests_v001.md | DO009: kernel v002 tests |
 | 08_live_v002_test_v001.md | DO010: live page test of v002 |
 | 09_own_chat_key_v001.md | DO011: own chat key in use |
+| 10_kernel_notebook_tests_v001.md | DO012: kernel notebook tests fixed |
 
 © Computational Classnotes · CC BY-NC-SA 4.0

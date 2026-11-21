@@ -24,6 +24,7 @@
 | `tools/make_notebooks_v002.py` | v002 | notebooks build (T033–T040, DO009–DO010) |
 | `wolfram/HanKitabKernel_v001.wl/.nb` | v001 | kernel deploy + tests |
 | `wolfram/HanKitabKernel_v002.wl/.nb` | v002 | kernel: open chat, owner-only code |
+| `wolfram/HanKitabKernel_v003.nb` | v003 | kernel notebook with fixed, self-contained tests |
 | `wolfram/HanKitab{OperationsLog,DevelopmentLog,Scripts}_v002.nb` | v002 | logs and scripts |
 | `wolfram/HanKitabOperationsLog_v001.nb` | v001 | (T) T001–T032, (DO) DO001–DO008 |
 | `wolfram/HanKitabDevelopmentLog_v001.nb` | v001 | development log |
