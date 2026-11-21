@@ -1,0 +1,19 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+(* \:00a9 Computational Classnotes \:00b7 CC BY-NC-SA 4.0 *)
+Notebook[{
+Cell["Han Kitab \:00b7 Development Log v001", "Title"],
+Cell["How the Han Kitab reader and its editions were built on 20\:201321 November 2026.", "Text"],
+Cell["1. Research report", "Section"],
+Cell["Web research on the Han Kitab corpus, authors, editions and the history of Sinification; written as docs/HanKitab_Research_v001.md and rendered to PDF with pandoc and headless Chrome. Chinese passages are short public-domain excerpts with new English translations; unverified items are flagged in the report.", "Text"],
+Cell["2. The Arabian Prophet (Mason 1921), clear-text edition", "Section"],
+Cell["Source: Internet Archive scan cu31924024748232 (Cornell copy), 368 pages, with an OCR text layer. tools/make_mason_v001.py reads each page with pdftotext -layout, removes running heads and page-number lines, splits footnotes from body text, rejoins paragraphs and hyphenated words, marks unreadable Chinese as [Chinese] and unreadable letters as [?], and keeps the original page numbers as [p. N]. Plates were cut from the scan at 200 dpi, trimmed and turned upright. tools/spellfix_mason_v001.py makes cautious one-edit spelling fixes, checked by hand (records/01). Trials and fixes: Operations Log T001\:2013T014, DO004\:2013DO005.", "Text"],
+Cell["3. \:5929\:65b9\:81f3\:8056\:5be6\:9304 (1924), facsimile", "Section"],
+Cell["Source: National Library of China scan on Wikimedia Commons, NLC416-13jh005373-59385, 295 pages (prefaces, contents, juan 1\:201310). Text recognition was tried with Tesseract and RapidOCR (DO001, records/04); at best about 80 % of characters were right and some came out in simplified form. The user decided: copy the pages as they are and add only a cover and copyright page. tools/clean_zh_pages_v001.py removes specks of 6 pixels or fewer, trims each page to its printed area and centres it on one page size; nothing else is touched. The PDF uses CCITT G4 images (10.7 MB). Juan start pages were found by reading the first column of every page (DO003).", "Text"],
+Cell["4. The app (HanKitab_v001.html)", "Section"],
+Cell["Modelled on the TUTUcat repository (single index.html + manifest + service worker + icons), without the talking head. Tabs: Library, Read (English, English + \:4e2d\:6587 with the Chinese page viewer opened at the matching juan, or \:4e2d\:6587 alone; text size; read aloud with browser voices), Search (offline, across all texts), Ask (HanKitabKernel chat with passages from the texts; offline it returns the passages), Downloads (editions and the unchanged original scans), About. Built by tools/make_app_v001.py from tools/app_template_v001.html. Tests: DO007.", "Text"],
+Cell["5. HanKitabKernel", "Section"],
+Cell["Same design as TUTUKernel / LaplacianLabKernel. Deployed from the user's signed-in Wolfram kernel to https://www.wolframcloud.com/obj/ccn2/HanKitabKernel, reusing the private chat key object LaplacianLab/apikey and a new private secret HanKitab/secret. Tests DO006: the chat needs max_tokens well above 60 (T031).", "Text"],
+Cell["Glossary", "Section"],
+Cell["Han Kitab \:6f22\:514b\:5854\:5e03: Chinese-language Islamic books. juan \:5377: a fascicle or chapter of a Chinese book. \:5929\:65b9\:81f3\:8056\:5be6\:9304: Liu Zhi's life of the Prophet. Facsimile: the pages reproduced as images, unchanged. OCR: machine reading of text from images. CCITT G4: lossless compression for black-and-white images. PWA: a web page that can be installed like an app. (T) / (DO): see docs/CCN_Acronyms_and_Conventions_v002.md.", "Text"],
+Cell["\:00a9 Computational Classnotes \:00b7 CC BY-NC-SA 4.0", "Text"]
+}, WindowTitle -> "HanKitabDevelopmentLog_v001.nb"]

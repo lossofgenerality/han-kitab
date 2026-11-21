@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+/* Hardwired CCN Cloud settings (same shape as Tutu Cat / Laplacian Lab). The key is typed on the page. */
+window.HANKITAB_CONFIG = window.HANKITAB_CONFIG || {
+  MODEL: "claude-sonnet-5-5",
+  WOLFRAM_URL: "https://www.wolframcloud.com/obj/ccn2/HanKitabKernel"
+};
+/* Read-aloud voices. The first name found on the device wins. */
+window.HANKITAB_VOICE = window.HANKITAB_VOICE || {
+  RATE: 1.0,
+  EN: ["Moira", "Microsoft Sonia", "Google UK English Female", "Daniel", "Samantha", "Microsoft Aria", "Google US English"],
+  ZH: ["Mei-Jia", "Ting-Ting", "Microsoft HsiaoChen", "Google 國語（臺灣）", "Google 普通话（中国大陆）", "Microsoft Xiaoxiao"]
+};
+</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Han Kitab · 漢克塔布</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1F5C4F" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1715" media="(prefers-color-scheme: dark)">
+<meta name="description" content="Han Kitab reader: Chinese Islamic classics, translations, research and an ask-the-texts guide. Computational Classnotes.">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Han Kitab">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Noto+Serif+TC:wght@400;600&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#F4F1EA; --surface:#FFFDF8; --fg:#1E2421; --muted:#5E6A64; --line:#DDD6C8;
+  --accent:#1F5C4F; --accent2:#B0812F; --soft:#E7EFEB; --zh:"Noto Serif TC","Noto Serif CJK TC","PingFang TC","Songti TC",serif;
+  --serif:"Crimson Pro","Noto Serif TC",Georgia,serif; --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --fs:19px;
+}
+@media (prefers-color-scheme: dark){ :root{
+  --bg:#0F1715; --surface:#16201D; --fg:#E7ECE9; --muted:#9AA9A2; --line:#2A3833; --accent:#6FC2AC; --accent2:#E0B666; --soft:#1C2925; } }
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+header.top{position:sticky;top:0;z-index:20;background:var(--accent);color:#fff;display:flex;align-items:center;gap:12px;padding:10px 16px;flex-wrap:wrap}
+@media (prefers-color-scheme: dark){ header.top{background:#12352D} }
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.3px}
+.brand .seal{width:34px;height:34px;border-radius:7px;background:#fff;color:var(--accent);display:grid;place-items:center;font-family:var(--zh);font-weight:600;font-size:15px;line-height:1}
+@media (prefers-color-scheme: dark){ .brand .seal{background:#E7ECE9;color:#12352D} }
+.brand small{display:block;font-weight:400;opacity:.85;font-size:12px}
+nav.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav.tabs button{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;padding:7px 13px;border-radius:999px;font:500 14px var(--sans);cursor:pointer}
+nav.tabs button[aria-selected=true]{background:#fff;color:var(--accent)}
+main{max-width:1180px;margin:0 auto;padding:18px 16px 60px}
+section.view{display:none} section.view.on{display:block}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.book{cursor:pointer;transition:transform .15s}
+.book:hover{transform:translateY(-2px)}
+.book h3{margin:4px 0 6px;font-family:var(--serif);font-size:21px}
+.book .zh{font-family:var(--zh);color:var(--accent);font-size:17px}
+.book p{margin:6px 0;color:var(--muted);font-size:14px;line-height:1.45}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--accent);margin-right:4px}
+.tag.warn{background:#F6E7C9;color:#7A5416}
+@media (prefers-color-scheme: dark){ .tag.warn{background:#3A2F1A;color:#E0B666} }
+h1.page{font-family:var(--serif);font-weight:600;font-size:30px;margin:6px 0 4px}
+p.lede{color:var(--muted);margin:0 0 16px;max-width:760px;line-height:1.5}
+.reader{display:grid;grid-template-columns:250px 1fr;gap:18px;align-items:start}
+.toc{position:sticky;top:70px;max-height:calc(100vh - 90px);overflow:auto;font-size:14px}
+.toc a{display:block;padding:5px 8px;border-radius:8px;color:var(--fg);text-decoration:none;line-height:1.3}
+.toc a:hover,.toc a.on{background:var(--soft);color:var(--accent)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.toolbar button,.toolbar select,.btn{background:var(--surface);border:1px solid var(--line);color:var(--fg);padding:7px 12px;border-radius:10px;font:500 14px var(--sans);cursor:pointer}
+.btn{text-decoration:none;display:inline-block}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.toolbar .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.toolbar .seg button{border:0;border-radius:0}
+.toolbar .seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+article.text{font-family:var(--serif);font-size:var(--fs);line-height:1.62;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 30px}
+article.text h1,article.text h2,article.text h3{font-family:var(--serif);line-height:1.25}
+article.text h2{font-size:1.45em;border-top:1px solid var(--line);padding-top:22px;margin-top:34px;scroll-margin-top:80px}
+article.text h2:first-child{border-top:0;margin-top:0;padding-top:0}
+article.text p{margin:.55em 0}
+article.text table{border-collapse:collapse;width:100%;font-size:.8em;font-family:var(--sans);margin:12px 0;display:block;overflow-x:auto}
+article.text td,article.text th{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+article.text th{background:var(--soft)}
+article.text .pg{font:500 11px var(--sans);color:var(--muted);background:var(--soft);padding:1px 5px;border-radius:5px;white-space:nowrap}
+article.text .notes{font-size:.78em;line-height:1.45;color:var(--muted);border-left:3px solid var(--line);padding:4px 0 4px 12px;margin:6px 0 14px}
+article.text .loc{font:11px var(--sans);color:var(--muted)}
+article.text figure.plate{margin:20px auto;text-align:center}
+article.text figure.plate img{max-width:100%;max-height:78vh;border-radius:6px;border:1px solid var(--line);background:#fff;cursor:zoom-in}
+article.text figcaption{font-size:.82em;font-style:italic;color:var(--muted);margin-top:6px}
+article.text .titlepage{text-align:center;padding:10px 0 20px}
+article.text .titlepage h1{font-size:2em;margin:0}
+article.text .ednote{font:14px/1.5 var(--sans);background:var(--soft);border-radius:10px;padding:10px 14px}
+article.text .lines,article.text .dedication{text-align:center}
+article.text .index{columns:2;font-size:.8em;line-height:1.4}
+article.text mark{background:#F3DE9B;color:inherit;border-radius:3px}
+.zhcol{font-family:var(--zh);line-height:1.9}
+.par{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.par .zhpane{align-self:start;font-family:var(--zh);font-size:.95em;line-height:1.9;border-left:1px solid var(--line);padding-left:18px}
+.pending{color:var(--muted);font:14px/1.5 var(--sans);background:var(--soft);border-radius:10px;padding:10px 14px}
+.viewer{position:sticky;top:70px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px}
+.viewer .vbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;font:13px var(--sans)}
+.viewer .vbar button,.viewer .vbar select{padding:5px 9px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:13px var(--sans);cursor:pointer}
+.viewer img{width:100%;height:auto;max-height:calc(100vh - 170px);object-fit:contain;background:#fff;border-radius:6px;cursor:zoom-in}
+.viewer .vnote{font:12px/1.4 var(--sans);color:var(--muted);margin-top:6px}
+@media (prefers-color-scheme: dark){ .viewer img{filter:invert(.88) hue-rotate(180deg)} }
+.dl{display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.dl:first-of-type{border-top:0} .dl .what b{font-family:var(--serif);font-size:18px} .dl .what div{font-size:13px;color:var(--muted)}
+.dl .get{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;place-items:center;z-index:50;cursor:zoom-out}
+.lightbox.on{display:grid} .lightbox img{max-width:96vw;max-height:94vh;background:#fff}
+/* search */
+.searchbar{display:flex;gap:8px;margin:0 0 14px}
+.searchbar input{flex:1;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:16px var(--sans)}
+.hit{border-top:1px solid var(--line);padding:10px 2px;cursor:pointer}
+.hit b{color:var(--accent)} .hit .src{font-size:12px;color:var(--muted)}
+/* ask */
+.chat{display:flex;flex-direction:column;gap:10px;min-height:280px;max-height:62vh;overflow:auto;padding:4px}
+.msg{max-width:84%;padding:10px 14px;border-radius:14px;line-height:1.5;white-space:pre-wrap;font-size:15px}
+.msg.me{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+.msg.bot{align-self:flex-start;background:var(--soft);border-bottom-left-radius:4px}
+.msg.wait{opacity:.7;font-style:italic}
+.askrow{display:flex;gap:8px;margin-top:12px}
+.askrow input{flex:1;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:16px var(--sans)}
+.keyrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;font-size:14px;color:var(--muted)}
+.keyrow input{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg);min-width:220px}
+footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-size:12.5px;text-align:center}
+#installBtn{display:none}
+@media (max-width:820px){
+  .reader{grid-template-columns:1fr}
+  .toc{position:static;max-height:220px}
+  article.text{padding:16px 16px;--fs:17px}
+  .par{grid-template-columns:1fr} .par .zhpane{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:10px}
+  nav.tabs{margin-left:0}
+}
+@media print{ header.top,nav,.toc,.toolbar,footer.ccn{display:none} article.text{border:0} }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><div class="seal" aria-hidden="true">漢經</div><div>Han Kitab · 漢克塔布<small>Chinese Islamic classics · Computational Classnotes</small></div></div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-v="library" aria-selected="true">Library</button>
+    <button role="tab" data-v="read" aria-selected="false">Read</button>
+    <button role="tab" data-v="search" aria-selected="false">Search</button>
+    <button role="tab" data-v="ask" aria-selected="false">Ask</button>
+    <button role="tab" data-v="downloads" aria-selected="false">Downloads</button>
+    <button role="tab" data-v="about" aria-selected="false">About</button>
+    <button id="installBtn" class="btn">Install app</button>
+  </nav>
+</header>
+
+<main>
+  <!-- LIBRARY -->
+  <section class="view on" id="v-library">
+    <h1 class="page">Library</h1>
+    <p class="lede">The Han Kitab are Islamic books written in Classical Chinese by Chinese Muslims, from Wang Daiyu's <i>Zhengjiao zhenquan</i> (1642) to the late Qing. Open a text to read it. Where a Chinese original is available it can be shown beside the English.</p>
+    <div class="grid" id="books"></div>
+  </section>
+
+  <!-- READ -->
+  <section class="view" id="v-read">
+    <div class="reader">
+      <nav class="toc card" id="toc" aria-label="Contents"></nav>
+      <div>
+        <div class="toolbar">
+          <select id="docSel" aria-label="Choose text"></select>
+          <span class="seg" id="langSeg" title="Language">
+            <button data-l="en" aria-pressed="true">English</button>
+            <button data-l="par" aria-pressed="false">English + 中文</button>
+            <button data-l="zh" aria-pressed="false">中文</button>
+          </span>
+          <button id="smaller" title="Smaller text">A−</button>
+          <button id="larger" title="Larger text">A+</button>
+          <button id="readBtn" title="Read the current section aloud">▶ Read aloud</button>
+          <button id="stopBtn" title="Stop reading" disabled>■ Stop</button>
+          <a class="btn" id="pdfLink" href="#" download>PDF</a>
+          <a class="btn" id="mdLink" href="#" download>Markdown</a>
+        </div>
+        <article class="text" id="doc"></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEARCH -->
+  <section class="view" id="v-search">
+    <h1 class="page">Search</h1>
+    <p class="lede">Search every text in the app at once, in English or Chinese. Works offline.</p>
+    <form class="searchbar" id="sForm"><input id="sIn" placeholder="e.g. Black Stone, Liu Zhi, 清真, Medina" autocomplete="off"><button class="btn primary">Search</button></form>
+    <div class="card" id="sOut"><span class="pending">Type a word or phrase.</span></div>
+  </section>
+
+  <!-- ASK -->
+  <section class="view" id="v-ask">
+    <h1 class="page">Ask the texts</h1>
+    <p class="lede">Ask a question about the Han Kitab. With a CCN Cloud key, answers come from an AI system (through HanKitabKernel) that is given the passages most relevant to your question. Without a key, you get the matching passages from the texts themselves.</p>
+    <div class="card">
+      <div class="keyrow"><span id="ccnState">Offline: answers are passages from the texts.</span>
+        <input id="keyIn" type="password" placeholder="CCN Cloud key" autocomplete="off"><button class="btn" id="connectBtn">Connect</button></div>
+      <div class="chat" id="log"></div>
+      <form class="askrow" id="askForm"><input id="askIn" placeholder="e.g. Who was Liu Zhi? What does Mason say about the Black Stone?" autocomplete="off"><button class="btn primary" id="sendBtn">Ask</button></form>
+    </div>
+  </section>
+
+  <!-- DOWNLOADS -->
+  <section class="view" id="v-downloads">
+    <h1 class="page">Downloads</h1>
+    <p class="lede">Every file is free to download. The original scans are kept exactly as they were published; the clear-text and facsimile editions are made from them.</p>
+    <div class="card" id="dlList"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="view" id="v-about">
+    <h1 class="page">About</h1>
+    <div class="card" style="line-height:1.6;max-width:820px">
+      <p><b>Han Kitab · 漢克塔布</b> is a reader for Chinese Islamic classics and their translations, made by Computational Classnotes.</p>
+      <ul>
+        <li><b>Texts:</b> the 1921 text of Mason's <i>The Arabian Prophet</i> is in the public domain; this clear-text edition and the research report are © Computational Classnotes · CC BY-NC-SA 4.0.</li>
+        <li><b>Chinese originals:</b> added as clear text when made from public-domain scans. Machine-read Chinese is marked as such until it has been proofread.</li>
+        <li><b>Ask:</b> answers in the Ask tab are written by an AI system and may be wrong; check them against the texts.</li>
+        <li><b>Offline:</b> once opened, the app and its texts work without a connection. Ask needs one, unless it is answering from the texts.</li>
+      </ul>
+      <p>Production: Principal Investigator Lucval · Oversight Directorate Zil · Editors Dara, Lucia, Zil · Software FreeFormer · Agent Kirari-chan (キラリちゃん). Programming: Hikari Noor Hoshino (星野ヌール), AI System Programmer.</p>
+      <p>Source and files: <a href="https://github.com/lossofgenerality/han-kitab">github.com/lossofgenerality/han-kitab</a> · Version <span id="ver"></span></p>
+    </div>
+  </section>
+</main>
+<footer class="ccn">© Computational Classnotes · CC BY-NC-SA 4.0 · <a href="https://justice.compclassnotes.com/" style="color:inherit">Justice Node</a></footer>
+<div class="lightbox" id="lb"><img alt=""></div>
+
+<!-- ===== CONTENT (generated by tools/make_app_v001.py) ===== -->
+<template id="doc-mason">__MASON__</template>
+<template id="doc-report">__REPORT__</template>
+<script id="zh-data" type="application/json">__ZHDATA__</script>
+<script id="dl-data" type="application/json">__DLDATA__</script>
+<script id="facs-data" type="application/json">__FACSDATA__</script>
+
+<script>
+(() => {
+  const APP_VERSION = "__VERSION__";
+  document.getElementById('ver').textContent = APP_VERSION;
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  /* ---------- catalogue ---------- */
+  const ZH = JSON.parse(document.getElementById('zh-data').textContent || '{}');
+  const FACS = JSON.parse(document.getElementById('facs-data').textContent || '{}');
+  const DLS = JSON.parse(document.getElementById('dl-data').textContent || '[]');
+  const DOCS = [
+    { id: 'mason', tpl: 'doc-mason', title: 'The Arabian Prophet', zh: '天方至聖實錄', by: 'Liu Zhi 劉智 · trans. Isaac Mason (1921)',
+      blurb: 'The first English version of Liu Zhi’s life of the Prophet (completed 1724), with Mason’s appendices on Chinese Islam and all twenty original illustrations. Choose “English + 中文” to read it beside the Chinese pages.',
+      tags: ['English', '1921 · public domain', 'beside the Chinese pages'],
+      pdf: 'texts/ArabianProphet_Mason1921_v001.pdf', md: 'texts/ArabianProphet_Mason1921_v001.md' },
+    { id: 'facs', facs: true, title: 'Tianfang zhisheng shilu (1924)', zh: '天方至聖實錄', by: 'Liu Zhi 劉智 · prefaces and juan 1–10 · facsimile',
+      blurb: 'The Chinese original, page by page as printed in 1924: every page reproduced unchanged, with a contents list by juan.',
+      tags: ['中文', 'original pages, unchanged', '297 pages'],
+      pdf: 'texts/TianfangZhishengShilu_1924_facsimile_v001.pdf', md: null },
+    { id: 'report', tpl: 'doc-report', title: 'Han Kitab: research report', zh: '漢克塔布研究', by: 'Computational Classnotes · v001 (2026)',
+      blurb: 'What the Han Kitab is, a catalogue of the publications, Chinese passages beside English, and a history of Sinification from 1642 to today.',
+      tags: ['English + 中文 passages', 'Research'],
+      pdf: 'docs/HanKitab_Research_v001.pdf', md: 'docs/HanKitab_Research_v001.md' }
+  ];
+  const books = $('#books'), docSel = $('#docSel');
+  DOCS.forEach((d) => {
+    const c = document.createElement('div'); c.className = 'card book'; c.tabIndex = 0;
+    c.innerHTML = `<div class="zh">${d.zh}</div><h3>${d.title}</h3><p>${d.by}</p><p>${d.blurb}</p>` +
+      d.tags.map((t) => `<span class="tag${/coming/.test(t) ? ' warn' : ''}">${t}</span>`).join('');
+    c.onclick = c.onkeydown = (e) => { if (e.type === 'click' || e.key === 'Enter') openDoc(d.id); };
+    books.appendChild(c);
+    const o = document.createElement('option'); o.value = d.id; o.textContent = d.title; docSel.appendChild(o);
+  });
+
+  /* ---------- tabs ---------- */
+  function show(v) {
+    $$('nav.tabs [role=tab]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.v === v)));
+    $$('section.view').forEach((s) => s.classList.toggle('on', s.id === 'v-' + v));
+    if (v === 'read' && !current) openDoc('mason', true);
+    try { history.replaceState(null, '', '#' + v + (v === 'read' && current ? '/' + current : '')); } catch (e) {}
+  }
+  $$('nav.tabs [role=tab]').forEach((b) => b.onclick = () => show(b.dataset.v));
+
+  /* ---------- reader ---------- */
+  const docEl = $('#doc'), tocEl = $('#toc');
+  let current = null, lang = 'en';
+  try { lang = localStorage.getItem('hk.lang') || 'en'; } catch (e) {}
+  let fs = 19; try { fs = +localStorage.getItem('hk.fs') || 19; } catch (e) {}
+  document.documentElement.style.setProperty('--fs', fs + 'px');
+
+  function sectionsOf(root) {   // split an article into sections at each h2
+    const out = []; let cur = null;
+    [...root.childNodes].forEach((n) => {
+      if (n.nodeType === 1 && n.tagName === 'H2') { cur = { id: n.id, title: n.textContent.replace(/\s+/g, ' ').trim(), nodes: [n] }; out.push(cur); }
+      else { if (!cur) { cur = { id: 'top', title: 'Title', nodes: [] }; out.push(cur); } cur.nodes.push(n); }
+    });
+    return out;
+  }
+  function openDoc(id, quiet) {
+    const d = DOCS.find((x) => x.id === id); if (!d) return;
+    current = id; docSel.value = id;
+    $('#pdfLink').href = d.pdf; $('#mdLink').href = d.md || '#'; $('#mdLink').style.display = d.md ? '' : 'none';
+    $('#langSeg').style.display = d.id === 'mason' ? '' : 'none';
+    render();
+    if (!quiet) show('read');
+    window.scrollTo(0, 0);
+  }
+  function render() {
+    const d = DOCS.find((x) => x.id === current);
+    if (d.facs) { renderFacs(); return; }
+    const frag = document.getElementById(d.tpl).content.cloneNode(true);
+    const holder = document.createElement('div'); holder.appendChild(frag);
+    const secs = sectionsOf(holder);
+    const zh = (ZH[current] && ZH[current].sections) || {};
+    docEl.innerHTML = '';
+    tocEl.innerHTML = '<div style="font:600 12px var(--sans);color:var(--muted);padding:4px 8px">CONTENTS</div>';
+    secs.forEach((s) => {
+      const wrap = document.createElement('div'); wrap.className = 'sec'; wrap.dataset.sec = s.id;
+      const en = document.createElement('div'); s.nodes.forEach((n) => en.appendChild(n));
+      const z = zh[s.id];
+      if (lang === 'en' || !Object.keys(zh).length && current !== 'mason') { wrap.appendChild(en); }
+      else if (lang === 'zh') {
+        const h = en.querySelector('h2'); if (h) wrap.appendChild(h.cloneNode(true));
+        wrap.appendChild(zhBlock(z, s));
+      } else {
+        const h = en.querySelector('h2'); if (h) { wrap.appendChild(h); }
+        const grid = document.createElement('div'); grid.className = 'par';
+        const zp = zhBlock(z, s); zp.classList.add('zhpane');
+        grid.appendChild(en); grid.appendChild(zp); wrap.appendChild(grid);
+      }
+      docEl.appendChild(wrap);
+      if (s.id !== 'top') { const a = document.createElement('a'); a.href = '#'; a.textContent = s.title; a.onclick = (e) => { e.preventDefault(); wrap.scrollIntoView({ behavior: 'smooth' }); }; tocEl.appendChild(a); }
+    });
+    $$('#langSeg button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.l === lang)));
+    $$('img', docEl).forEach((im) => { im.loading = 'lazy'; im.onclick = () => { const lb = $('#lb'); lb.firstElementChild.src = im.src; lb.classList.add('on'); }; });
+  }
+  function zhBlock(z, s) {
+    if (current === 'mason' && FACS.pages) {
+      const start = (FACS.mason_map || {})[s.id];
+      const v = makeViewer(start || FACS.juan[0].page, start ? null : 'This part of Mason’s book is not in juan 1–10 (the scan covers the first half of the work). Browse the pages with the contents list.');
+      return v;
+    }
+    const div = document.createElement('div'); div.className = 'zhcol';
+    if (z && z.text) {
+      if (z.note) { const n = document.createElement('div'); n.className = 'pending'; n.textContent = z.note; div.appendChild(n); }
+      z.text.split(/\n{2,}/).forEach((p) => { const e = document.createElement('p'); e.textContent = p; div.appendChild(e); });
+    } else {
+      const n = document.createElement('div'); n.className = 'pending';
+      n.textContent = current === 'mason'
+        ? '中文原文待補 · The Chinese text of this section has not been added yet. It will come from the public-domain scan of 天方至聖實錄 (1924 printing, juan 1–10).'
+        : 'No separate Chinese text for this section.';
+      div.appendChild(n);
+    }
+    return div;
+  }
+  /* ---------- page viewer for the Chinese facsimile ---------- */
+  const pageSrc = (n) => FACS.dir + '/page_' + String(n).padStart(3, '0') + '.png';
+  function juanOf(n) { let j = FACS.juan[0]; for (const x of FACS.juan) if (x.page <= n) j = x; return j; }
+  function makeViewer(start, note) {
+    const v = document.createElement('div'); v.className = 'viewer';
+    let n = start;
+    v.innerHTML = `<div class="vbar"><button data-a="-1" title="Previous page">◀</button><button data-a="1" title="Next page">▶</button>
+      <select aria-label="Juan">${FACS.juan.map((j) => `<option value="${j.page}">${j.label}</option>`).join('')}</select>
+      <span class="pno"></span></div><img alt="Page of 天方至聖實錄"><div class="vnote"></div>`;
+    const img = v.querySelector('img'), sel = v.querySelector('select'), pno = v.querySelector('.pno'), vn = v.querySelector('.vnote');
+    function go(k) {
+      n = Math.max(1, Math.min(FACS.pages, k)); img.src = pageSrc(n); pno.textContent = `p. ${n} / ${FACS.pages}`; sel.value = String(juanOf(n).page);
+      if (touched) [n + 1, n - 1].forEach((m) => { if (m >= 1 && m <= FACS.pages) { const i = new Image(); i.src = pageSrc(m); } });
+    }
+    let touched = false; img.loading = 'lazy';
+    v.querySelectorAll('button[data-a]').forEach((b) => b.onclick = () => { touched = true; go(n + +b.dataset.a); });
+    sel.onchange = () => { touched = true; go(+sel.value); };
+    img.onclick = () => { const lb = $('#lb'); lb.firstElementChild.src = img.src; lb.classList.add('on'); };
+    vn.textContent = (note ? note + ' ' : '') + (FACS.note || '');
+    go(n);
+    return v;
+  }
+  function renderFacs() {
+    docEl.innerHTML = '';
+    tocEl.innerHTML = '<div style="font:600 12px var(--sans);color:var(--muted);padding:4px 8px">卷目 · CONTENTS</div>';
+    const head = document.createElement('div');
+    head.innerHTML = `<h2 style="border:0;margin-top:0;padding-top:0">天方至聖實錄 <span style="font-size:.6em;color:var(--muted)">Tianfang zhisheng shilu, 1924 printing</span></h2>
+      <p style="font:14px/1.5 var(--sans);color:var(--muted)">Original pages, unchanged. Use ◀ ▶ or the arrow keys to turn pages; tap a page to enlarge it. The book reads from the right column to the left.</p>`;
+    docEl.appendChild(head);
+    const v = makeViewer(FACS.juan.find((j) => j.label.startsWith('卷一')).page); docEl.appendChild(v);
+    v.querySelector('img').style.maxHeight = 'none';
+    FACS.juan.forEach((j) => { const a = document.createElement('a'); a.href = '#'; a.textContent = j.label; a.onclick = (e) => { e.preventDefault(); v.querySelector('select').value = j.page; v.querySelector('select').onchange(); }; tocEl.appendChild(a); });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (!$('#v-read').classList.contains('on') || /INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
+    const v = $('.viewer', docEl); if (!v || current !== 'facs') return;
+    if (e.key === 'ArrowLeft') v.querySelector('[data-a="1"]').click();   // Chinese books advance to the left
+    if (e.key === 'ArrowRight') v.querySelector('[data-a="-1"]').click();
+  });
+
+  /* ---------- downloads ---------- */
+  const dlEl = $('#dlList');
+  DLS.forEach((g) => {
+    const row = document.createElement('div'); row.className = 'dl';
+    row.innerHTML = `<div class="what"><b>${g.title}</b><div>${g.desc}</div></div><div class="get">${g.files.map((f) =>
+      `<a class="btn${f.primary ? ' primary' : ''}" href="${f.href}" download>${f.label} · ${f.size}</a>`).join('')}</div>`;
+    dlEl.appendChild(row);
+  });
+
+  docSel.onchange = () => openDoc(docSel.value);
+  $$('#langSeg button').forEach((b) => b.onclick = () => { lang = b.dataset.l; try { localStorage.setItem('hk.lang', lang); } catch (e) {} render(); });
+  $('#smaller').onclick = () => setFs(fs - 1); $('#larger').onclick = () => setFs(fs + 1);
+  function setFs(v) { fs = Math.max(14, Math.min(28, v)); document.documentElement.style.setProperty('--fs', fs + 'px'); try { localStorage.setItem('hk.fs', fs); } catch (e) {} }
+  $('#lb').onclick = () => $('#lb').classList.remove('on');
+
+  /* ---------- read aloud (browser voices) ---------- */
+  const VC = window.HANKITAB_VOICE || {}, synth = window.speechSynthesis;
+  function pickVoice(prefs, langPrefix) {
+    const vs = synth ? synth.getVoices() : [];
+    for (const p of prefs || []) { const v = vs.find((x) => x.name.includes(p)); if (v) return v; }
+    return vs.find((x) => x.lang && x.lang.toLowerCase().startsWith(langPrefix)) || null;
+  }
+  function visibleSection() {
+    const secs = $$('.sec', docEl); let best = secs[0];
+    for (const s of secs) { if (s.getBoundingClientRect().top < window.innerHeight * 0.4) best = s; }
+    return best;
+  }
+  $('#readBtn').onclick = () => {
+    if (!synth) { alert('This browser has no speech voices.'); return; }
+    synth.cancel();
+    const sec = visibleSection(); if (!sec) return;
+    const zhOnly = lang === 'zh';
+    const src = zhOnly ? $('.zhcol', sec) : (sec.querySelector('.par > div:first-child') || sec);
+    const text = [...src.querySelectorAll('h2,p')].map((p) => p.textContent.replace(/\[p\. \d+\]/g, '')).join('\n');
+    const chunks = text.match(/[^.!?。！？\n]+[.!?。！？]?/g) || [];
+    const voice = zhOnly ? pickVoice(VC.ZH, 'zh') : pickVoice(VC.EN, 'en');
+    chunks.forEach((c, i) => {
+      const u = new SpeechSynthesisUtterance(c.trim()); if (voice) u.voice = voice; u.lang = zhOnly ? 'zh-TW' : 'en-GB'; u.rate = VC.RATE || 1;
+      if (i === chunks.length - 1) u.onend = () => { $('#stopBtn').disabled = true; };
+      synth.speak(u);
+    });
+    $('#stopBtn').disabled = false;
+  };
+  $('#stopBtn').onclick = () => { synth && synth.cancel(); $('#stopBtn').disabled = true; };
+
+  /* ---------- search index (offline) ---------- */
+  let INDEX = null;
+  function buildIndex() {
+    INDEX = [];
+    DOCS.forEach((d) => {
+      const h = document.createElement('div'); h.appendChild(document.getElementById(d.tpl).content.cloneNode(true));
+      sectionsOf(h).forEach((s) => {
+        const tmp = document.createElement('div'); s.nodes.forEach((n) => tmp.appendChild(n.cloneNode(true)));
+        tmp.querySelectorAll('p,li,td,.notes,figcaption').forEach((el) => {
+          const t = el.textContent.replace(/\s+/g, ' ').trim(); if (t.length > 25) INDEX.push({ doc: d.id, sec: s.id, title: s.title, t });
+        });
+      });
+      const z = ZH[d.id] && ZH[d.id].sections;
+      if (z) Object.entries(z).forEach(([sid, v]) => (v.text || '').split(/\n{2,}/).forEach((t) => { if (t.trim()) INDEX.push({ doc: d.id, sec: sid, title: sid + ' · 中文', t: t.trim() }); }));
+    });
+  }
+  function search(q, max = 40) {
+    if (!INDEX) buildIndex();
+    const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+    const isZh = /[㐀-鿿]/.test(q);
+    const scored = [];
+    for (const e of INDEX) {
+      const low = e.t.toLowerCase(); let sc = 0;
+      if (isZh) { if (low.includes(q)) sc = 5; }
+      else for (const w of terms) { const k = low.split(w).length - 1; if (k) sc += 1 + Math.min(k, 3); else { sc = -1e9; } }
+      if (low.includes(q.toLowerCase())) sc += 3;
+      if (sc > 0) scored.push([sc, e]);
+    }
+    return scored.sort((a, b) => b[0] - a[0]).slice(0, max).map((x) => x[1]);
+  }
+  const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  function snippet(t, q) {
+    const low = t.toLowerCase(), w = q.toLowerCase().split(/\s+/)[0]; let i = Math.max(0, low.indexOf(w) - 120);
+    let s = (i ? '…' : '') + t.slice(i, i + 320) + (t.length > i + 320 ? '…' : '');
+    s = esc(s); q.split(/\s+/).filter(Boolean).forEach((x) => { s = s.replace(new RegExp('(' + x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<b>$1</b>'); });
+    return s;
+  }
+  $('#sForm').onsubmit = (e) => {
+    e.preventDefault(); const q = $('#sIn').value.trim(); if (!q) return;
+    const hits = search(q), out = $('#sOut');
+    out.innerHTML = hits.length ? `<div class="src">${hits.length} result${hits.length > 1 ? 's' : ''}</div>` : '<span class="pending">Nothing found.</span>';
+    hits.forEach((h) => {
+      const d = DOCS.find((x) => x.id === h.doc), el = document.createElement('div'); el.className = 'hit';
+      el.innerHTML = `<div>${snippet(h.t, q)}</div><div class="src">${d.title} · ${esc(h.title)}</div>`;
+      el.onclick = () => { openDoc(h.doc); setTimeout(() => { const s = $(`.sec[data-sec="${h.sec}"]`); if (s) s.scrollIntoView(); highlightIn(s, q); }, 50); };
+      out.appendChild(el);
+    });
+  };
+  function highlightIn(root, q) {
+    if (!root) return; const w = q.split(/\s+/)[0]; if (!w) return;
+    const re = new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); let n;
+    while ((n = walker.nextNode())) { const m = n.data.match(re); if (m) { const r = document.createRange(); r.setStart(n, m.index); r.setEnd(n, m.index + m[0].length); const mk = document.createElement('mark'); r.surroundContents(mk); mk.scrollIntoView({ block: 'center' }); return; } }
+  }
+
+  /* ---------- Ask: CCN Cloud chat through HanKitabKernel (same protocol as TUTUKernel) ---------- */
+  const CFG = window.HANKITAB_CONFIG || {};
+  const KERNEL_URL = String(CFG.WOLFRAM_URL || ''), MODEL = String(CFG.MODEL || 'claude-sonnet-5-5');
+  let ccnKey = '', CCN = false; try { ccnKey = localStorage.getItem('hk.ccnKey') || ''; } catch (e) {}
+  const PERSONA = 'You are the Han Kitab Guide in the Computational Classnotes Han Kitab reader. You answer questions about the Han Kitab (Chinese Islamic texts by Wang Daiyu, Ma Zhu, Liu Zhi, Ma Dexin and others), Islam in China and the texts in this app. Use the passages you are given first, say which text and section they come from, and say plainly when the passages do not answer the question. Be accurate, fair and concise. You are an AI system; if asked, say so. If someone asks whether they are talking to a person or an AI, answer honestly that this reply was written by an AI system. Give no personal details about the people who make this app; send such requests to Lucia Valente, director, lucia@compclassnotes.com. Answer in the language of the question.';
+  function b64enc(str) { const bytes = new TextEncoder().encode(str); let bin = ''; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(bin); }
+  function b64dec(b) { return new TextDecoder().decode(Uint8Array.from(atob(b), (c) => c.charCodeAt(0))); }
+  async function kernelCall(params) {
+    const r = await fetch(KERNEL_URL, { method: 'POST', body: new URLSearchParams({ key: ccnKey, ...params }) });
+    const j = await r.json().catch(() => null);
+    if (!j) throw new Error('Unreadable reply (HTTP ' + r.status + ')');
+    if (j.Success === false || j.Failure || j.Message === 'bad key') throw new Error(j.Message || 'Kernel error');
+    return j;
+  }
+  const stateEl = $('#ccnState'), logEl = $('#log');
+  async function ccnConnect() {
+    if (!ccnKey) return false;
+    stateEl.textContent = 'Connecting to CCN Cloud…';
+    try {
+      const j = await kernelCall({ mode: 'wolfram', code_b64: b64enc('{$VersionNumber, 1 + 1}') });
+      if (j.chat_ready === false) { stateEl.textContent = 'CCN Cloud answered, but no chat key is stored on HanKitabKernel yet.'; return false; }
+      CCN = true; stateEl.textContent = 'Connected to CCN Cloud (HanKitabKernel).'; return true;
+    } catch (e) { stateEl.textContent = 'Could not connect: ' + (e.message === 'bad key' ? 'that key was not accepted.' : e.message); return false; }
+  }
+  $('#keyIn').value = ccnKey;
+  $('#connectBtn').onclick = async () => { ccnKey = $('#keyIn').value.trim(); try { localStorage.setItem('hk.ccnKey', ccnKey); } catch (e) {} await ccnConnect(); };
+  if (ccnKey) ccnConnect();
+  function addMsg(who, text) { const d = document.createElement('div'); d.className = 'msg ' + who; d.textContent = text; logEl.appendChild(d); logEl.scrollTop = logEl.scrollHeight; return d; }
+  const convo = [];
+  addMsg('bot', 'Ask me about the Han Kitab, Liu Zhi, Wang Daiyu, Ma Zhu, Islam in China, or anything in Mason’s Arabian Prophet.');
+  $('#askForm').onsubmit = async (e) => {
+    e.preventDefault(); const q = $('#askIn').value.trim(); if (!q) return; $('#askIn').value = '';
+    addMsg('me', q);
+    const hits = search(q.replace(/[?？!.,，。]/g, ' ').split(/\s+/).filter((w) => w.length > 3 || /[㐀-鿿]/.test(w)).slice(0, 4).join(' ') || q, 6);
+    if (!CCN) {
+      if (!hits.length) { addMsg('bot', 'I found no passage for that. Try other words, or connect a CCN Cloud key for a written answer.'); return; }
+      addMsg('bot', 'Passages from the texts:\n\n' + hits.slice(0, 4).map((h) => `• ${h.t.slice(0, 420)}${h.t.length > 420 ? '…' : ''}\n   (${DOCS.find((d) => d.id === h.doc).title} · ${h.title})`).join('\n\n'));
+      return;
+    }
+    const wait = addMsg('bot wait', 'Reading the texts…');
+    const ctx = hits.map((h, i) => `[${i + 1}] ${DOCS.find((d) => d.id === h.doc).title} · ${h.title}: ${h.t.slice(0, 900)}`).join('\n\n');
+    convo.push({ role: 'user', content: `Passages:\n${ctx || '(none found)'}\n\nQuestion: ${q}` });
+    try {
+      const j = await kernelCall({ mode: 'chat', payload_b64: b64enc(JSON.stringify({ model: MODEL, max_tokens: 1500, system: PERSONA, messages: convo.slice(-8) })) });
+      if (j.error) throw new Error(j.error);
+      let t = b64dec(j.text_b64 || '');
+      try { const o = JSON.parse(t); t = o.reply || (o.content && o.content[0] && o.content[0].text) || t; } catch (e2) {}
+      wait.textContent = t.trim(); wait.className = 'msg bot'; convo.push({ role: 'assistant', content: t.trim() });
+    } catch (err) { wait.textContent = 'The cloud connection failed: ' + err.message; wait.className = 'msg bot'; convo.pop(); }
+  };
+
+  /* ---------- install + offline ---------- */
+  let deferred = null;
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferred = e; $('#installBtn').style.display = 'inline-block'; });
+  $('#installBtn').onclick = async () => { if (!deferred) return; deferred.prompt(); await deferred.userChoice; deferred = null; $('#installBtn').style.display = 'none'; };
+  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+
+  /* ---------- start ---------- */
+  const h = (location.hash || '').slice(1).split('/');
+  if (h[2] && /^(en|par|zh)$/.test(h[2])) lang = h[2];
+  if (h[0] === 'read') openDoc(h[1] || 'mason'); else if (h[0]) show(h[0]);
+})();
+</script>
+</body>
+</html>
