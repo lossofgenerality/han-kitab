@@ -1,0 +1,143 @@
+(* Content-type: application/vnd.wolfram.cdf.text *)
+
+(*** Wolfram CDF File ***)
+(* http://www.wolfram.com/cdf *)
+
+(* CreatedBy='Wolfram 15.0' *)
+
+(*************************************************************************)
+(*                                                                       *)
+(*                                                                       *)
+(*  This file was created under the Wolfram Enterprise licensing terms.  *)
+(*                                                                       *)
+(*       For additional information concerning CDF licensing see:        *)
+(*                                                                       *)
+(*        www.wolfram.com/cdf/adopting-cdf/licensing-options.html        *)
+(*                                                                       *)
+(*                                                                       *)
+(*                                                                       *)
+(*************************************************************************)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[      1060,         20]
+NotebookDataLength[      4882,        121]
+NotebookOptionsPosition[      4311,        109]
+NotebookOutlinePosition[      4628,        123]
+CellTagsIndexPosition[      4585,        120]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell["Han Kitab \[CenterDot] Cloud Objects v001", "Title",ExpressionUUID->"4cbe288e-a840-4400-b08f-0d7a152bcf0c"],
+
+Cell["\<\
+Private Wolfram Cloud objects used by HanKitabKernel. Account: ccn2 \
+(dara@lossofgenerality.com). Only the owner can read them. This notebook \
+holds their addresses only, never their values.\
+\>", "Text",ExpressionUUID->"43510731-261b-4b6e-947f-56980a4191f0"],
+
+Cell["\<\
+Kernel owner secret (needed for code mode and for forcing a news refresh)\
+\>", "Section",ExpressionUUID->"843df62a-84a7-4103-ad6a-a1c1d04b064b"],
+
+Cell[BoxData[
+ RowBox[{"secretObj", " ", "=", " ", 
+  RowBox[{
+  "CloudObject", 
+   "[", "\"\<https://www.wolframcloud.com/obj/ccn2/HanKitab/secret\>\"", 
+   "]"}]}]], "Input",ExpressionUUID->"12538456-79fd-4fc9-9071-c6f18c19d138"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"secret", " ", "=", " ", 
+   RowBox[{"CloudGet", "[", "secretObj", "]"}]}], ";"}]], "Input",ExpressionUU\
+ID->"cd4c49ff-71af-44c6-8229-a5c19dbfec04"],
+
+Cell["Chat API key (read by the kernel for the Ask tab)", "Section",ExpressionUUID->"931fc27c-bb73-4cf4-a26a-ae68ec851890"],
+
+Cell[BoxData[
+ RowBox[{"apikeyObj", " ", "=", " ", 
+  RowBox[{
+  "CloudObject", 
+   "[", "\"\<https://www.wolframcloud.com/obj/ccn2/HanKitab/apikey\>\"", 
+   "]"}]}]], "Input",ExpressionUUID->"d7294a5b-f629-4152-a3c2-3ca91d3063c5"],
+
+Cell["\<\
+Weekly news cache (written by the kernel; refreshed once a week)\
+\>", "Section",ExpressionUUID->"72df1ab6-e2ae-4eef-87a0-d4d140bde247"],
+
+Cell[BoxData[
+ RowBox[{"newsObj", " ", "=", " ", 
+  RowBox[{
+  "CloudObject", 
+   "[", "\"\<https://www.wolframcloud.com/obj/ccn2/HanKitab/newscache\>\"", 
+   "]"}]}]], "Input",ExpressionUUID->"5c8c3935-0f0c-4f1b-9ec1-1a5113644617"],
+
+Cell["Public kernel endpoint", "Section",ExpressionUUID->"12b47042-a734-4c47-aa82-bd8e0d0dd3cc"],
+
+Cell[BoxData[
+ RowBox[{"kernelObj", " ", "=", " ", 
+  RowBox[{
+  "CloudObject", 
+   "[", "\"\<https://www.wolframcloud.com/obj/ccn2/HanKitabKernel\>\"", 
+   "]"}]}]], "Input",ExpressionUUID->"fe51c9d1-32ae-490c-9a89-413624794899"],
+
+Cell["Check that all exist and are private", "Section",ExpressionUUID->"32303875-773c-474c-9e87-9f2117387646"],
+
+Cell[BoxData[
+ RowBox[{"Map", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"#", ",", " ", 
+      RowBox[{"FileExistsQ", "[", "#", "]"}], ",", " ", 
+      RowBox[{"Lookup", "[", 
+       RowBox[{
+        RowBox[{"Options", "[", 
+         RowBox[{"#", ",", " ", "Permissions"}], "]"}], ",", " ", 
+        "Permissions"}], "]"}]}], "}"}], " ", "&"}], ",", " ", 
+   RowBox[{"{", 
+    RowBox[{"secretObj", ",", " ", "apikeyObj", ",", " ", "newsObj"}], 
+    "}"}]}], "]"}]], "Input",ExpressionUUID->"b5a56bdf-e5a6-48f4-b749-\
+ad20eb561f03"],
+
+Cell["\[Copyright] Computational Classnotes \[CenterDot] CC BY-NC-SA 4.0", \
+"Text",ExpressionUUID->"feef0a98-1570-4993-9524-093db2a99a21"]
+},
+FrontEndVersion->"15.0 for Mac OS X ARM (64-bit) (May 19, 2026)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"a0b2d77e-31f3-4409-8817-73e0ec25ee28"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[1460, 33, 113, 0, 70, "Title",ExpressionUUID->"4cbe288e-a840-4400-b08f-0d7a152bcf0c"],
+Cell[1576, 35, 271, 4, 70, "Text",ExpressionUUID->"43510731-261b-4b6e-947f-56980a4191f0"],
+Cell[1850, 41, 155, 2, 70, "Section",ExpressionUUID->"843df62a-84a7-4103-ad6a-a1c1d04b064b"],
+Cell[2008, 45, 231, 5, 70, "Input",ExpressionUUID->"12538456-79fd-4fc9-9071-c6f18c19d138"],
+Cell[2242, 52, 183, 4, 70, "Input",ExpressionUUID->"cd4c49ff-71af-44c6-8229-a5c19dbfec04"],
+Cell[2428, 58, 123, 0, 70, "Section",ExpressionUUID->"931fc27c-bb73-4cf4-a26a-ae68ec851890"],
+Cell[2554, 60, 231, 5, 70, "Input",ExpressionUUID->"d7294a5b-f629-4152-a3c2-3ca91d3063c5"],
+Cell[2788, 67, 146, 2, 70, "Section",ExpressionUUID->"72df1ab6-e2ae-4eef-87a0-d4d140bde247"],
+Cell[2937, 71, 232, 5, 70, "Input",ExpressionUUID->"5c8c3935-0f0c-4f1b-9ec1-1a5113644617"],
+Cell[3172, 78, 96, 0, 70, "Section",ExpressionUUID->"12b47042-a734-4c47-aa82-bd8e0d0dd3cc"],
+Cell[3271, 80, 230, 5, 70, "Input",ExpressionUUID->"fe51c9d1-32ae-490c-9a89-413624794899"],
+Cell[3504, 87, 110, 0, 70, "Section",ExpressionUUID->"32303875-773c-474c-9e87-9f2117387646"],
+Cell[3617, 89, 548, 15, 70, "Input",ExpressionUUID->"b5a56bdf-e5a6-48f4-b749-ad20eb561f03"],
+Cell[4168, 106, 139, 1, 70, "Text",ExpressionUUID->"feef0a98-1570-4993-9524-093db2a99a21"]
+}
+]
+*)
+
+(* End of internal cache information *)
