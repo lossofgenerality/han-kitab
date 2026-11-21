@@ -449,7 +449,7 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
       if (z) Object.entries(z).forEach(([sid, v]) => (v.text || '').split(/\n{2,}/).forEach((t) => { if (t.trim()) INDEX.push({ doc: d.id, sec: sid, title: sid + ' · 中文', t: t.trim() }); }));
     });
   }
-  function search(q, max = 40) {
+  function search(q, max = 40, any = false) {
     if (!INDEX) buildIndex();
     const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
     const isZh = /[㐀-鿿]/.test(q);
@@ -457,7 +457,7 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
     for (const e of INDEX) {
       const low = e.t.toLowerCase(); let sc = 0;
       if (isZh) { if (low.includes(q)) sc = 5; }
-      else for (const w of terms) { const k = low.split(w).length - 1; if (k) sc += 1 + Math.min(k, 3); else { sc = -1e9; } }
+      else for (const w of terms) { const k = low.split(w).length - 1; if (k) sc += 1 + Math.min(k, 3); else if (!any) { sc = -1e9; } }
       if (low.includes(q.toLowerCase())) sc += 3;
       if (sc > 0) scored.push([sc, e]);
     }
