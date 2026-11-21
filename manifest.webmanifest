@@ -2,7 +2,7 @@
   "name": "Han Kitab · 漢克塔布",
   "short_name": "Han Kitab",
   "description": "Chinese Islamic classics: Liu Zhi's 天方至聖實錄 beside Mason's English, research and downloads. From Computational Classnotes.",
-  "id": "./",
+  "id": "/han-kitab/",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
