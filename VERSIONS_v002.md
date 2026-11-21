@@ -30,5 +30,6 @@
 | `wolfram/HanKitabScripts_v001.nb` | v001 | all scripts |
 | `records/01–08` | v001 | raw outputs |
 | `docs/HanKitabProjectContext_v001.md/.nb` | v001 | state, open tasks, how to resume |
+| `docs/HanKitabProjectContext_v002.md/.nb` | v002 | state after open Ask and fixed URL |
 
 © Computational Classnotes · CC BY-NC-SA 4.0
