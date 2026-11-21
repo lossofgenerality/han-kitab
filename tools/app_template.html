@@ -437,6 +437,7 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
   function buildIndex() {
     INDEX = [];
     DOCS.forEach((d) => {
+      if (!d.tpl) return;   // the facsimile has page images only
       const h = document.createElement('div'); h.appendChild(document.getElementById(d.tpl).content.cloneNode(true));
       sectionsOf(h).forEach((s) => {
         const tmp = document.createElement('div'); s.nodes.forEach((n) => tmp.appendChild(n.cloneNode(true)));

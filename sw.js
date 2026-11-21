@@ -1,7 +1,7 @@
 /* Han Kitab service worker: keeps the app working offline.
    VERSION is set by tools/make_app.py from the app's content, so installed copies update by themselves.
    © Computational Classnotes · CC BY-NC-SA 4.0 */
-const VERSION = 'hankitab-4430d7e08e';
+const VERSION = 'hankitab-6060e239f3';
 const SHELL = ['./', './index.html', './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './favicon-32.png'];
 

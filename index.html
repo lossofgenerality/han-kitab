@@ -10808,6 +10808,7 @@ Islam in China”.</li>
   function buildIndex() {
     INDEX = [];
     DOCS.forEach((d) => {
+      if (!d.tpl) return;   // the facsimile has page images only
       const h = document.createElement('div'); h.appendChild(document.getElementById(d.tpl).content.cloneNode(true));
       sectionsOf(h).forEach((s) => {
         const tmp = document.createElement('div'); s.nodes.forEach((n) => tmp.appendChild(n.cloneNode(true)));
