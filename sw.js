@@ -1,8 +1,8 @@
 /* Han Kitab service worker: keeps the app working offline.
-   Bump VERSION whenever you change the app or the icons, so installed copies update.
+   VERSION is set by tools/make_app.py from the app's content, so installed copies update by themselves.
    © Computational Classnotes · CC BY-NC-SA 4.0 */
-const VERSION = 'hankitab-v001';
-const SHELL = ['./', './index.html', './HanKitab_v001.html', './manifest.webmanifest',
+const VERSION = 'hankitab-3999f1de49';
+const SHELL = ['./', './index.html', './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './favicon-32.png'];
 
 self.addEventListener('install', (e) => {
@@ -18,7 +18,7 @@ self.addEventListener('fetch', (e) => {
   const url = new URL(req.url);
   if (req.mode === 'navigate') {                           // the app page: network first, cache when offline
     e.respondWith(fetch(req).then((res) => { const copy = res.clone(); caches.open(VERSION).then((c) => c.put(req, copy)); return res; })
-      .catch(() => caches.match(req).then((hit) => hit || caches.match('./HanKitab_v001.html'))));
+      .catch(() => caches.match(req).then((hit) => hit || caches.match('./index.html'))));
     return;
   }
   if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {

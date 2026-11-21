@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Build the Han Kitab reader app (HanKitab_v001.html) from the template and the texts in this repo.
-Run from the repo root:  python3 tools/make_app_v001.py
+"""Build the Han Kitab reader app (index.html) from the template and the texts in this repo.
+Run from the repo root:  python3 tools/make_app.py
 © Computational Classnotes · CC BY-NC-SA 4.0"""
 import json, os, re, subprocess
 
-VERSION = "v001"
-OUT = f"HanKitab_{VERSION}.html"
+OUT = "index.html"
 
 def frag(md, opts=()):
     return subprocess.run(["pandoc", md, "-t", "html5", *opts], capture_output=True, text=True, check=True).stdout
@@ -58,11 +57,17 @@ for g in DL:
     for f in g["files"]:
         f["size"] = size(f["href"])
 
-tpl = open("tools/app_template_v001.html").read()
+tpl = open("tools/app_template.html").read()
 html = (tpl.replace("__MASON__", mason).replace("__REPORT__", report)
         .replace("__ZHDATA__", json.dumps({}, ensure_ascii=False))
         .replace("__FACSDATA__", json.dumps(FACS, ensure_ascii=False))
         .replace("__DLDATA__", json.dumps(DL, ensure_ascii=False))
-        .replace("__VERSION__", VERSION))
+        )
+import hashlib
 open(OUT, "w").write(html)
+# service worker cache name follows the content, so installed copies update by themselves
+h = hashlib.sha1(html.encode()).hexdigest()[:10]
+sw = open("sw.js").read()
+sw = re.sub(r"const VERSION = '[^']*';", f"const VERSION = 'hankitab-{h}';", sw)
+open("sw.js", "w").write(sw)
 print(OUT, len(html))

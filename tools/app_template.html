@@ -194,10 +194,9 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
   <!-- ASK -->
   <section class="view" id="v-ask">
     <h1 class="page">Ask the texts</h1>
-    <p class="lede">Ask a question about the Han Kitab. With a CCN Cloud key, answers come from an AI system (through HanKitabKernel) that is given the passages most relevant to your question. Without a key, you get the matching passages from the texts themselves.</p>
+    <p class="lede">Ask a question about the Han Kitab. Answers are written by an AI system (through HanKitabKernel), which is given the passages from these texts most relevant to your question. When you are offline, you get the matching passages themselves.</p>
     <div class="card">
-      <div class="keyrow"><span id="ccnState">Offline: answers are passages from the texts.</span>
-        <input id="keyIn" type="password" placeholder="CCN Cloud key" autocomplete="off"><button class="btn" id="connectBtn">Connect</button></div>
+      <div class="keyrow"><span id="ccnState">Connecting to CCN Cloud…</span></div>
       <div class="chat" id="log"></div>
       <form class="askrow" id="askForm"><input id="askIn" placeholder="e.g. Who was Liu Zhi? What does Mason say about the Black Stone?" autocomplete="off"><button class="btn primary" id="sendBtn">Ask</button></form>
     </div>
@@ -222,7 +221,8 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
         <li><b>Offline:</b> once opened, the app and its texts work without a connection. Ask needs one, unless it is answering from the texts.</li>
       </ul>
       <p>Production: Principal Investigator Lucval · Oversight Directorate Zil · Editors Dara, Lucia, Zil · Software FreeFormer · Agent Kirari-chan (キラリちゃん). Programming: Hikari Noor Hoshino (星野ヌール), AI System Programmer.</p>
-      <p>Source and files: <a href="https://github.com/lossofgenerality/han-kitab">github.com/lossofgenerality/han-kitab</a> · Version <span id="ver"></span></p>
+      <p>Ask needs no key: anyone may ask. Answers are limited in length.</p>
+      <p>Source and files: <a href="https://github.com/lossofgenerality/han-kitab">github.com/lossofgenerality/han-kitab</a></p>
     </div>
   </section>
 </main>
@@ -238,8 +238,6 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
 
 <script>
 (() => {
-  const APP_VERSION = "__VERSION__";
-  document.getElementById('ver').textContent = APP_VERSION;
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
   /* ---------- catalogue ---------- */
@@ -494,12 +492,12 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
   /* ---------- Ask: CCN Cloud chat through HanKitabKernel (same protocol as TUTUKernel) ---------- */
   const CFG = window.HANKITAB_CONFIG || {};
   const KERNEL_URL = String(CFG.WOLFRAM_URL || ''), MODEL = String(CFG.MODEL || 'claude-sonnet-5-5');
-  let ccnKey = '', CCN = false; try { ccnKey = localStorage.getItem('hk.ccnKey') || ''; } catch (e) {}
+  let CCN = false;
   const PERSONA = 'You are the Han Kitab Guide in the Computational Classnotes Han Kitab reader. You answer questions about the Han Kitab (Chinese Islamic texts by Wang Daiyu, Ma Zhu, Liu Zhi, Ma Dexin and others), Islam in China and the texts in this app. Use the passages you are given first, say which text and section they come from, and say plainly when the passages do not answer the question. Be accurate, fair and concise. You are an AI system; if asked, say so. If someone asks whether they are talking to a person or an AI, answer honestly that this reply was written by an AI system. Give no personal details about the people who make this app; send such requests to Lucia Valente, director, lucia@compclassnotes.com. Answer in the language of the question.';
   function b64enc(str) { const bytes = new TextEncoder().encode(str); let bin = ''; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(bin); }
   function b64dec(b) { return new TextDecoder().decode(Uint8Array.from(atob(b), (c) => c.charCodeAt(0))); }
   async function kernelCall(params) {
-    const r = await fetch(KERNEL_URL, { method: 'POST', body: new URLSearchParams({ key: ccnKey, ...params }) });
+    const r = await fetch(KERNEL_URL, { method: 'POST', body: new URLSearchParams(params) });
     const j = await r.json().catch(() => null);
     if (!j) throw new Error('Unreadable reply (HTTP ' + r.status + ')');
     if (j.Success === false || j.Failure || j.Message === 'bad key') throw new Error(j.Message || 'Kernel error');
@@ -507,17 +505,15 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
   }
   const stateEl = $('#ccnState'), logEl = $('#log');
   async function ccnConnect() {
-    if (!ccnKey) return false;
     stateEl.textContent = 'Connecting to CCN Cloud…';
     try {
-      const j = await kernelCall({ mode: 'wolfram', code_b64: b64enc('{$VersionNumber, 1 + 1}') });
-      if (j.chat_ready === false) { stateEl.textContent = 'CCN Cloud answered, but no chat key is stored on HanKitabKernel yet.'; return false; }
-      CCN = true; stateEl.textContent = 'Connected to CCN Cloud (HanKitabKernel).'; return true;
-    } catch (e) { stateEl.textContent = 'Could not connect: ' + (e.message === 'bad key' ? 'that key was not accepted.' : e.message); return false; }
+      const j = await kernelCall({ mode: 'status' });
+      if (j.chat_ready === false) { stateEl.textContent = 'Written answers are not available right now; you will get passages from the texts.'; return false; }
+      CCN = true; stateEl.textContent = 'Answers written by an AI system through CCN Cloud. Check them against the texts.'; return true;
+    } catch (e) { stateEl.textContent = 'Offline: answers are passages from the texts.'; return false; }
   }
-  $('#keyIn').value = ccnKey;
-  $('#connectBtn').onclick = async () => { ccnKey = $('#keyIn').value.trim(); try { localStorage.setItem('hk.ccnKey', ccnKey); } catch (e) {} await ccnConnect(); };
-  if (ccnKey) ccnConnect();
+  ccnConnect();
+  window.addEventListener('online', ccnConnect);
   function addMsg(who, text) { const d = document.createElement('div'); d.className = 'msg ' + who; d.textContent = text; logEl.appendChild(d); logEl.scrollTop = logEl.scrollHeight; return d; }
   const convo = [];
   addMsg('bot', 'Ask me about the Han Kitab, Liu Zhi, Wang Daiyu, Ma Zhu, Islam in China, or anything in Mason’s Arabian Prophet.');
