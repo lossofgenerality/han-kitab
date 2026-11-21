@@ -17,6 +17,10 @@
 | `docs/HanKitab_Research_v001.pdf/.md` | v001 | research report |
 | `docs/CCN_Acronyms_and_Conventions_v002.md` | v002 | conventions (copied) |
 | `originals/*.pdf` | — | original scans, unchanged |
+| `gallery/photo_01–45.jpg`, `thumb_01–45.jpg` | v001 | gallery photographs (Wikimedia Commons) |
+| `gallery/gallery_v001.json`, `gallery/CREDITS_v001.md` | v001 | captions, authors, licences |
+| `img/cover_TianfangZhengxue_1861.jpg` (+ metadata .txt) | v001 | cover art, Manchester Library CC BY-NC-SA 4.0 |
+| `tools/make_gallery_v001.py` | v001 | gallery build |
 | `tools/make_mason_v001.py, spellfix_mason_v001.py, mason_book_v001.css` | v001 | Mason edition build |
 | `tools/clean_zh_pages_v001.py, zh_facsimile_front_v001.html` | v001 | facsimile build |
 | `tools/app_template.html, make_app.py` | — | app build (unversioned, like the app) |

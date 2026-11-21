@@ -14,12 +14,17 @@ One fixed address, always the current app: https://lossofgenerality.github.io/ha
   opened at the matching juan), or 中文 alone; the 1924 facsimile page by page (◀ ▶, arrow keys, contents by juan);
   the research report. Text size, read aloud with the device's voices, PDF and Markdown links.
 - **History** — the history of the Han Kitab and of Sinification, from the research report (sections 1–3, 7, 8).
+- **Gallery** — 45 photographs of mosques, tombs, calligraphy, Muslim quarters, markets and food across China (Wikimedia Commons, each with its author and licence; `gallery/CREDITS_v001.md`).
 - **Search** — every text at once, English or Chinese, offline.
 - **Ask** — questions about the Han Kitab, no key needed. Answers come through HanKitabKernel, which is given
   the most relevant passages; offline, the passages themselves are shown.
 - **Downloads** — the editions and the unchanged original scans.
 - **Install** — Chrome/Edge: *Install app*; iPhone/iPad: Share → Add to Home Screen. Works offline once opened
   (PDFs excepted).
+
+## Cover
+
+The Library opens with a page of Lan Zixi's 天方正學 (1861): the basmala and the letter alif drawn as the human form. The University of Manchester Library, Chinese Crawford 326, CC BY-NC-SA 4.0.
 
 ## Texts
 

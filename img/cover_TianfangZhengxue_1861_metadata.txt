@@ -1,0 +1,31 @@
+Image Number	JRL21051078
+Reference Number	Chinese Crawford 326
+Image Title	Page of text
+Parent Work Title	Tian Fang Zheng Xue
+Alternative Parent Work Title	Introduction to Islamic studies and doctrine
+Translated Parent Work Title	True Study of Islam
+Creator	Lan Zi Xi
+Creator Role	Translator
+Date Created	1861
+Language Code	chi
+Language	Chinese
+Subject	Islam
+Category of Material	Printed
+Technique Used	Printing (process)
+Medium	Ink
+Support	Paper
+Item Height	295 mm
+Item Width	195 mm
+Current Repository	The University of Manchester Library, U.K.
+Provenance	Lindsay family Earls of Crawford and Balcarres, former owner
+Rights Holder - Image	The University of Manchester Library
+Rights holder - Work	The University of Manchester Library
+Access Rights	<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a>
+References	Zheng Yaying and John B.W. Deane, Handlist of the Chinese Collections in the John Rylands University Library of Manchester (unpublished catalogue, 1991)
+Date Captured (yyyy-mm-dd)	2021-05-26
+Image Creation Technique	Digital capture by The University of Manchester Library
+Date Image Added (yyyy-mm)	2021-09
+Educational Notes	Qing: China's multilingual empire exhibition
+Metadata Language	eng-GB
+Academic Project Lead	Julianne Simpson
+Collection Code	Rylands

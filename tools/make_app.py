@@ -62,6 +62,7 @@ html = (tpl.replace("__MASON__", mason).replace("__REPORT__", report)
         .replace("__ZHDATA__", json.dumps({}, ensure_ascii=False))
         .replace("__FACSDATA__", json.dumps(FACS, ensure_ascii=False))
         .replace("__DLDATA__", json.dumps(DL, ensure_ascii=False))
+        .replace("__GALDATA__", json.dumps(json.load(open("gallery/gallery_v001.json")), ensure_ascii=False))
         )
 import hashlib
 open(OUT, "w").write(html)

@@ -105,6 +105,9 @@ T = [  # (index, file, u, x, v, y, why)
  ("T048", "tools/app_template.html", 'data-v="search"', '', '', 'History tab: sections 1, 2, 3, 7 and 8 of the research report, with its own contents list', 'editor: add the history research to the site'),
  ("T049", "tools/app_template.html", "wait.", "textContent = t.trim();", " wait.className", "innerHTML = esc(t) with **bold**, *italic* and # headings rendered", 'answers showed raw ** marks (DO013[2])'),
  ("T050", "tools/app_template.html", 'Justice Node</a>', '', '</footer>', ' · <a href="https://discuss.compclassnotes.com/">CCN Node</a>', 'editor: link to the CCN discussion site in the footer'),
+ ("T051", "tools/app_template.html", 'History</button>', '', '\n', '\n<button ... data-v="gallery">Gallery</button> + section v-gallery (header image, category chips, masonry tiles, lightbox with credit, keys and swipe)', 'editor: a rich gallery of Chinese mosques and Muslim areas'),
+ ("T052", "tools/app_template.html", '<h1 class="page">Library</h1>', '', '', 'hero with the 天方正學 (1861) alif page as cover art and credit line', 'editor: cover art from the Manchester page'),
+ ("T053", "tools/make_app.py", '.replace("__DLDATA__", ...)', '', '', '\n.replace("__GALDATA__", gallery/gallery_v001.json)', 'gallery data embedded in index.html'),
  ("T042", "sw.js", "const VERSION = '", "hankitab-v002", "';", "hankitab-<sha1 of index.html, 10 hex>", 'cache name set automatically by make_app.py'),
 ]
 DO = [  # (index, what, [(iteration, result)], record)
@@ -120,6 +123,7 @@ DO = [  # (index, what, [(iteration, result)], record)
  ("DO011", "own chat key", [("1", "HanKitab/apikey stored, owner-only"), ("2", "open chat answered using it")], "records/09_own_chat_key_v001.md"),
  ("DO012", "kernel notebook tests (v003 cells, run in the local kernel)", [("1", "status"), ("2", "chat in Chinese"), ("3", "code with secret")], "records/10_kernel_notebook_tests_v001.md"),
  ("DO013", "History tab and source labels", [("1", "headless: History renders sections 1, 2, 3, 7, 8 with contents"), ("2", "live: Ask on the Black Stone credits Mason's footnote")], "records/11_history_tab_v001.png"),
+ ("DO014", "gallery: Commons search and selection (run on the editor's local Wolfram kernel)", [("1", "44 subjects searched, 39 images with open licences"), ("2", "contact sheet: 7 wrong or weak images found (plaque, map, stairs, dessert…)"), ("3", "16 alternative searches, 42 candidates, 14 chosen"), ("4", "45 photographs in 4 categories; headless test of Library hero and Gallery")], "gallery/CREDITS_v001.md, records/12_gallery_and_cover_v001.png"),
  ("DO008", "facsimile PDF build", [("1", "img2pdf from PNG: 297 pp., 18.0 MB"), ("2", "CCITT G4 TIFF: 297 pp., 10.7 MB")], "texts/TianfangZhishengShilu_1924_facsimile_v001.pdf"),
 ]
 cells = [cell("Han Kitab · Operations Log v002", "Title"),

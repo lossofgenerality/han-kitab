@@ -107,6 +107,44 @@ article.text mark{background:#F3DE9B;color:inherit;border-radius:3px}
 .dl{display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
 .dl:first-of-type{border-top:0} .dl .what b{font-family:var(--serif);font-size:18px} .dl .what div{font-size:13px;color:var(--muted)}
 .dl .get{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+/* hero + gallery */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:22px;align-items:center;background:linear-gradient(135deg,var(--surface),var(--soft));border:1px solid var(--line);border-radius:18px;padding:22px 26px;margin-bottom:18px;overflow:hidden}
+.hero h1{font-family:var(--serif);font-size:38px;margin:0 0 4px;line-height:1.1}
+.hero .zhbig{font-family:var(--zh);font-size:22px;color:var(--accent);letter-spacing:.2em;margin-bottom:10px}
+.hero p{color:var(--muted);line-height:1.55;margin:6px 0;max-width:640px}
+.hero figure{margin:0;transform:rotate(1.5deg)}
+.hero figure img{width:100%;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.18);display:block}
+.hero figcaption{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.35;transform:rotate(-1.5deg)}
+.ghead{position:relative;border-radius:18px;overflow:hidden;margin-bottom:16px;min-height:220px;display:flex;align-items:flex-end;background:#1F5C4F}
+.ghead img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.ghead .gt{position:relative;padding:22px 26px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.ghead h1{font-family:var(--serif);font-size:36px;margin:0}
+.ghead p{margin:6px 0 0;max-width:720px;line-height:1.5;opacity:.95}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.chips button{border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:7px 14px;border-radius:999px;font:500 14px var(--sans);cursor:pointer}
+.chips button[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.masonry{columns:4 260px;column-gap:14px}
+.tile{break-inside:avoid;margin:0 0 14px;border-radius:14px;overflow:hidden;background:var(--surface);border:1px solid var(--line);cursor:zoom-in;transition:transform .2s,box-shadow .2s;position:relative}
+.tile:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.12)}
+.tile img{width:100%;display:block;background:var(--soft)}
+.tile .cap{padding:9px 12px 11px}
+.tile .cap b{font-family:var(--serif);font-size:17px;display:block;line-height:1.2}
+.tile .cap .zh{font-family:var(--zh);color:var(--accent);font-size:14px}
+.tile .cap .pl{font-size:12px;color:var(--muted)}
+.tile .badge{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.55);color:#fff;font:600 11px var(--sans);padding:3px 8px;border-radius:999px;letter-spacing:.3px}
+.glb{position:fixed;inset:0;background:rgba(10,14,13,.94);z-index:60;display:none;grid-template-rows:1fr auto;color:#eee}
+.glb.on{display:grid}
+.glb .stage{display:flex;align-items:center;justify-content:center;padding:16px 60px 0;min-height:0}
+.glb .stage img{max-width:100%;max-height:calc(100vh - 190px);border-radius:6px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.glb .info{padding:14px 24px 20px;max-width:980px;margin:0 auto;line-height:1.5}
+.glb .info b{font-family:var(--serif);font-size:22px}
+.glb .info .zh{font-family:var(--zh);color:#9fe0cc;margin-left:8px}
+.glb .info .credit{font-size:12px;color:#aab}
+.glb .info a{color:#9fe0cc}
+.glb .nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:0;color:#fff;font-size:28px;width:46px;height:64px;border-radius:10px;cursor:pointer}
+.glb .prev{left:10px}.glb .next{right:10px}
+.glb .close{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.12);border:0;color:#fff;font-size:20px;width:40px;height:40px;border-radius:50%;cursor:pointer}
+@media (max-width:820px){.hero{grid-template-columns:1fr}.hero figure{max-width:220px;margin:auto}.glb .stage{padding:10px 8px 0}.glb .nav{display:none}}
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;place-items:center;z-index:50;cursor:zoom-out}
 .lightbox.on{display:grid} .lightbox img{max-width:96vw;max-height:94vh;background:#fff}
 /* search */
@@ -143,6 +181,7 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
     <button role="tab" data-v="library" aria-selected="true">Library</button>
     <button role="tab" data-v="read" aria-selected="false">Read</button>
     <button role="tab" data-v="history" aria-selected="false">History</button>
+    <button role="tab" data-v="gallery" aria-selected="false">Gallery</button>
     <button role="tab" data-v="search" aria-selected="false">Search</button>
     <button role="tab" data-v="ask" aria-selected="false">Ask</button>
     <button role="tab" data-v="downloads" aria-selected="false">Downloads</button>
@@ -154,8 +193,17 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
 <main>
   <!-- LIBRARY -->
   <section class="view on" id="v-library">
+    <div class="hero">
+      <div>
+        <div class="zhbig">漢克塔布</div>
+        <h1>Han Kitab</h1>
+        <p>Islamic books written in Classical Chinese by Chinese Muslims, from Wang Daiyu’s <i>Zhengjiao zhenquan</i> (1642) to the late Qing: Islam explained in the language of the Confucian classics.</p>
+        <p>Read Liu Zhi’s life of the Prophet in Chinese beside Isaac Mason’s English, follow the history, browse the gallery of China’s mosques and Muslim quarters, and download every text.</p>
+      </div>
+      <figure><img src="img/cover_TianfangZhengxue_1861.jpg" alt="Page of 天方正學 with the basmala and the alif figure">
+        <figcaption>天方字母爾立甫立圖, the letter alif as the human form. Lan Zixi 藍煦, <i>Tianfang zhengxue</i> 天方正學 (1861). The University of Manchester Library, Chinese Crawford 326, CC BY-NC-SA 4.0.</figcaption></figure>
+    </div>
     <h1 class="page">Library</h1>
-    <p class="lede">The Han Kitab are Islamic books written in Classical Chinese by Chinese Muslims, from Wang Daiyu's <i>Zhengjiao zhenquan</i> (1642) to the late Qing. Open a text to read it. Where a Chinese original is available it can be shown beside the English.</p>
     <div class="grid" id="books"></div>
   </section>
 
@@ -191,6 +239,15 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
       <nav class="toc card" id="htoc" aria-label="History contents"></nav>
       <article class="text" id="hist"></article>
     </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="view" id="v-gallery">
+    <div class="ghead"><img id="gheadImg" alt=""><div class="gt"><h1>Gallery · 清真寺與回坊</h1>
+      <p>Mosques across China, from Tang-era foundations on the coast to the Ming temple-mosques of the interior and the brick minarets of Xinjiang, with the Muslim quarters, markets and food around them. Many mosques have been rebuilt or altered since these photographs were taken.</p></div></div>
+    <div class="chips" id="gchips"></div>
+    <div class="masonry" id="gal"></div>
+    <p class="lede" style="font-size:13px;margin-top:10px">Photographs from Wikimedia Commons, each under its own licence (shown with the photo). Captions © Computational Classnotes · CC BY-NC-SA 4.0.</p>
   </section>
 
   <!-- SEARCH -->
@@ -237,6 +294,8 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
 </main>
 <footer class="ccn">© Computational Classnotes · CC BY-NC-SA 4.0 · <a href="https://justice.compclassnotes.com/" style="color:inherit">Justice Node</a> · <a href="https://discuss.compclassnotes.com/" style="color:inherit">CCN Node</a></footer>
 <div class="lightbox" id="lb"><img alt=""></div>
+<div class="glb" id="glb" role="dialog" aria-modal="true"><div class="stage"><img alt=""></div><div class="info"></div>
+  <button class="nav prev" aria-label="Previous">‹</button><button class="nav next" aria-label="Next">›</button><button class="close" aria-label="Close">✕</button></div>
 
 <!-- ===== CONTENT (generated by tools/make_app_v001.py) ===== -->
 <template id="doc-mason">__MASON__</template>
@@ -244,6 +303,7 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
 <script id="zh-data" type="application/json">__ZHDATA__</script>
 <script id="dl-data" type="application/json">__DLDATA__</script>
 <script id="facs-data" type="application/json">__FACSDATA__</script>
+<script id="gal-data" type="application/json">__GALDATA__</script>
 
 <script>
 (() => {
@@ -285,6 +345,7 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
     $$('section.view').forEach((s) => s.classList.toggle('on', s.id === 'v-' + v));
     if (v === 'read' && !current) openDoc('mason', true);
     if (v === 'history') renderHistory();
+    if (v === 'gallery') renderGallery();
     try { history.replaceState(null, '', '#' + v + (v === 'read' && current ? '/' + current : '')); } catch (e) {}
   }
   $$('nav.tabs [role=tab]').forEach((b) => b.onclick = () => show(b.dataset.v));
@@ -427,6 +488,52 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
       w.querySelectorAll('h3').forEach((h3) => { const b = document.createElement('a'); b.href = '#'; b.textContent = '· ' + h3.textContent; b.style.paddingLeft = '18px'; b.onclick = (e) => { e.preventDefault(); h3.scrollIntoView({ behavior: 'smooth' }); }; htoc.appendChild(b); });
     });
   }
+
+  /* ---------- gallery ---------- */
+  const GAL = JSON.parse(document.getElementById('gal-data').textContent || '[]');
+  const CATS = [['all', 'All'], ['Mosques', 'Mosques 清真寺'], ['Heritage', 'Tombs & calligraphy'], ['Quarters', 'Muslim quarters 回坊'], ['Markets', 'Markets & food']];
+  let gcat = 'all', gview = [], gi = 0, galDone = false;
+  function renderGallery() {
+    if (!galDone) {
+      galDone = true;
+      $('#gheadImg').src = (GAL.find((g) => /Great Mosque of Xi/.test(g.label)) || GAL[0]).img;
+      $('#gchips').innerHTML = CATS.map(([k, l]) => `<button data-c="${k}" aria-pressed="${k === gcat}">${l}${k === 'all' ? '' : ' · ' + GAL.filter((g) => g.cat === k).length}</button>`).join('');
+      $$('#gchips button').forEach((b) => b.onclick = () => { gcat = b.dataset.c; $$('#gchips button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); drawGal(); });
+    }
+    drawGal();
+  }
+  function drawGal() {
+    gview = GAL.filter((g) => gcat === 'all' || g.cat === gcat);
+    $('#gal').innerHTML = '';
+    gview.forEach((g, i) => {
+      const t = document.createElement('figure'); t.className = 'tile'; t.tabIndex = 0;
+      t.innerHTML = `<span class="badge">${esc(g.cat === 'Quarters' ? 'Quarter' : g.cat === 'Markets' ? 'Market' : g.cat === 'Heritage' ? 'Heritage' : 'Mosque')}</span>
+        <img loading="lazy" src="${g.thumb}" width="${g.w}" height="${g.h}" alt="${esc(g.label)}" style="aspect-ratio:${g.w}/${g.h};height:auto">
+        <figcaption class="cap"><b>${esc(g.label)}</b><span class="zh">${esc(g.zh)}</span> <span class="pl">· ${esc(g.place)}</span></figcaption>`;
+      t.onclick = t.onkeydown = (e) => { if (e.type === 'click' || e.key === 'Enter') openG(i); };
+      $('#gal').appendChild(t);
+    });
+  }
+  function openG(i) {
+    gi = (i + gview.length) % gview.length; const g = gview[gi], box = $('#glb');
+    box.querySelector('.stage img').src = g.img; box.querySelector('.stage img').alt = g.label;
+    box.querySelector('.info').innerHTML = `<b>${esc(g.label)}</b><span class="zh">${esc(g.zh)}</span> <span style="color:#aab">· ${esc(g.place)}</span>
+      <div>${esc(g.desc)}</div>
+      <div class="credit">Photo: ${esc(g.artist)} · <a href="${g.licenseUrl || g.page}" target="_blank" rel="noopener">${esc(g.license)}</a> · <a href="${g.page}" target="_blank" rel="noopener">Wikimedia Commons</a> · ${gi + 1} / ${gview.length}</div>`;
+    box.classList.add('on');
+  }
+  $('#glb .prev').onclick = (e) => { e.stopPropagation(); openG(gi - 1); };
+  $('#glb .next').onclick = (e) => { e.stopPropagation(); openG(gi + 1); };
+  $('#glb .close').onclick = () => $('#glb').classList.remove('on');
+  $('#glb').onclick = (e) => { if (e.target.id === 'glb' || e.target.classList.contains('stage')) $('#glb').classList.remove('on'); };
+  document.addEventListener('keydown', (e) => {
+    if (!$('#glb').classList.contains('on')) return;
+    if (e.key === 'Escape') $('#glb').classList.remove('on');
+    if (e.key === 'ArrowRight') openG(gi + 1);
+    if (e.key === 'ArrowLeft') openG(gi - 1);
+  });
+  let tx = 0; $('#glb').addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; }, { passive: true });
+  $('#glb').addEventListener('touchend', (e) => { const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 50) openG(gi + (d < 0 ? 1 : -1)); });
 
   docSel.onchange = () => openDoc(docSel.value);
   $$('#langSeg button').forEach((b) => b.onclick = () => { lang = b.dataset.l; try { localStorage.setItem('hk.lang', lang); } catch (e) {} render(); });
