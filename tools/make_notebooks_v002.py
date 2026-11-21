@@ -111,6 +111,12 @@ T = [  # (index, file, u, x, v, y, why)
  ("T054", "tools/app_template.html", '.hero figure{margin:0', ';transform:rotate(1.5deg)', '}', '', 'editor: the cover art looked crooked; tilt removed (caption counter-tilt removed too)'),
  ("T055", "tools/app_template.html", '<figure>', '', '<img src="img/cover_...">', '<a id="coverLink" href="img/cover_TianfangZhengxue_1861.jpg"> + caption links: Full size · original photograph with colour chart', 'editor: a link to the larger image; the cover also opens full size on tap'),
  ("T056", "docs/HanKitab_Research_v001.md (+ .pdf, index.html, project copy)", "imposed from above.", " Scholars such as David Stroup describe its aim as greater state supervision; some critics call it an erasure of Muslim identity.", "\n", "", 'editor request: sentence removed (section 7.2); also "; critics see its use as cover for repression" -> "." (section 8.5)'),
+("T057", "wolfram/HanKitabKernel_v004.wl", 'Which[\n #mode === "status", ...,', '', '\n #mode === "chat",', '\n #mode === "news", <|"updated" -> ..., "news_b64" -> ...|>,', 'keyless weekly news; owner key + code "refresh" forces a new fetch'),
+ ("T058", "wolfram/HanKitabKernel_v004.wl", 'getNews[force_] := ... AbsoluteTime[] - Lookup[c, "t", 0] < ', '', '', '7*24*3600', 'editor: "I like a weekly update"; cache HanKitab/newscache (private) refreshed once a week'),
+ ("T059", "wolfram/HanKitabKernel_v004.wl", 'x = ', 'ImportString[r["Body"], "XML"]', ';', 'ImportByteArray[r["BodyByteArray"], "XML"] /. s_String :> FromCharacterCode[ToCharacterCode[s], "UTF-8"]', 'headlines arrived as raw UTF-8 bytes (mojibake, Chinese filtered out); decoded'),
+ ("T060", "wolfram/HanKitabKernel_v004.wl", 'pickIt[list_, lang_, n_] := ', 'Take[sorted, UpTo[n]]', '', 'past 7 days; if fewer than 3, past 45 days; if still fewer than 3, latest 4', 'Google News ignores when:7d on long site: queries; dates filtered in the kernel'),
+ ("T061", "tools/app_template.html", '<h1 class="page">', '', 'Library</h1>', '<section class="news" id="news"> 中文 / China / Middle East / Asia tabs, headline list, footer </section>', 'editor: Chinese Muslim news on the front page, only Chinese, Asian and Middle Eastern outlets'),
+ ("T062", "tools/app_template.html", '/* ---------- install + offline ---------- */\n', "beforeinstallprompt shows a hidden button", '', 'button always shown; installs when allowed, otherwise a message with steps for iPhone, Safari, Firefox, Chrome (as in Tutu Cat)', 'editor: install button as in Tutu Cat'),
  ("T042", "sw.js", "const VERSION = '", "hankitab-v002", "';", "hankitab-<sha1 of index.html, 10 hex>", 'cache name set automatically by make_app.py'),
 ]
 DO = [  # (index, what, [(iteration, result)], record)
@@ -127,6 +133,7 @@ DO = [  # (index, what, [(iteration, result)], record)
  ("DO012", "kernel notebook tests (v003 cells, run in the local kernel)", [("1", "status"), ("2", "chat in Chinese"), ("3", "code with secret")], "records/10_kernel_notebook_tests_v001.md"),
  ("DO013", "History tab and source labels", [("1", "headless: History renders sections 1, 2, 3, 7, 8 with contents"), ("2", "live: Ask on the Black Stone credits Mason's footnote")], "records/11_history_tab_v001.png"),
  ("DO014", "gallery: Commons search and selection (run on the editor's local Wolfram kernel)", [("1", "44 subjects searched, 39 images with open licences"), ("2", "contact sheet: 7 wrong or weak images found (plaque, map, stairs, dessert…)"), ("3", "16 alternative searches, 42 candidates, 14 chosen"), ("4", "45 photographs in 4 categories; headless test of Library hero and Gallery")], "gallery/CREDITS_v001.md, records/12_gallery_and_cover_v001.png"),
+("DO015", "weekly news (kernel v004, local Wolfram kernel)", [("1", "deploy broke chat (chatCall missing): redeployed with full chatCall; chat end_turn"), ("2", "Chinese section 0: bytes not decoded; fixed: 10 items, Linxia 70th anniversary"), ("3", "when:7d ignored; kernel date window; sections 4/4/4/10"), ("4", "code mode with secret: 1+1 = 2")], "wolfram/HanKitabKernel_v004.wl"),
  ("DO008", "facsimile PDF build", [("1", "img2pdf from PNG: 297 pp., 18.0 MB"), ("2", "CCITT G4 TIFF: 297 pp., 10.7 MB")], "texts/TianfangZhishengShilu_1924_facsimile_v001.pdf"),
 ]
 cells = [cell("Han Kitab · Operations Log v002", "Title"),
@@ -170,7 +177,7 @@ notebook("wolfram/HanKitabDevelopmentLog_v002.nb", [cell(t, s) for s, t in dev])
 # ---------- 4. scripts ----------
 cells = [cell("Han Kitab · Scripts v002", "Title"),
          cell("Every script and template used to build this release, one cell each (Program style). The files themselves are in tools/ and wolfram/.", "Text")]
-for f in sorted(glob.glob("tools/*.py") + glob.glob("tools/*.html") + glob.glob("tools/*.css") + ["sw.js", "manifest.webmanifest", "wolfram/HanKitabKernel_v002.wl"]):
+for f in sorted(glob.glob("tools/*.py") + glob.glob("tools/*.html") + glob.glob("tools/*.css") + ["sw.js", "manifest.webmanifest", "wolfram/HanKitabKernel_v002.wl", "wolfram/HanKitabKernel_v004.wl"]):
     cells.append(cell(f, "Section"))
     cells.append(cell(open(f, encoding="utf-8").read(), "Program"))
 notebook("wolfram/HanKitabScripts_v002.nb", cells)
