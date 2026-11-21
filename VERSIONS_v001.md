@@ -25,5 +25,6 @@
 | `wolfram/HanKitabDevelopmentLog_v001.nb` | v001 | development log |
 | `wolfram/HanKitabScripts_v001.nb` | v001 | all scripts |
 | `records/01–06` | v001 | raw outputs |
+| `docs/HanKitabProjectContext_v001.md/.nb` | v001 | state, open tasks, how to resume |
 
 © Computational Classnotes · CC BY-NC-SA 4.0
