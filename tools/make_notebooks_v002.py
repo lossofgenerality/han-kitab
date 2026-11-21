@@ -101,6 +101,8 @@ T = [  # (index, file, u, x, v, y, why)
  ("T044", "tools/app_template.html", "DOCS.forEach((d) => {\n", "", "      const h = ...getElementById(d.tpl)", "      if (!d.tpl) return;\n", 'search and Ask failed (null template) once the facsimile was added; found in the live test DO010[2]'),
  ("T045", "tools/app_template.html", "const hits = search(", "words longer than 3 letters, all required", ", 6);", "key words without stop-words (Liu, Zhi kept), any may match", 'Ask found no passage for "Who was Liu Zhi?" (DO010[3])'),
  ("T046", "tools/make_notebooks_v002.py (kernel tests)", "pl = BaseEncode[", 'StringToByteArray[ExportString[..., "RawJSON", ...]]', "];", 'ExportByteArray[..., "RawJSON", ...]', 'test failed in the notebook: u and secret were defined in another cell, and the Chinese question was UTF-8 encoded twice; each test cell is now self-contained (HanKitabKernel_v003.nb)'),
+ ("T047", "tools/app_template.html", "const ctx = hits.map((h, i) => `[${i + 1}] ", "${title} · ${section}", ": ${text}`", "Source: <full source line> Section: <section> (a footnote by Isaac Mason).", 'Ask was unsure whether a footnote was Mason\'s; each passage now carries its source'),
+ ("T048", "tools/app_template.html", 'data-v="search"', '', '', 'History tab: sections 1, 2, 3, 7 and 8 of the research report, with its own contents list', 'editor: add the history research to the site'),
  ("T042", "sw.js", "const VERSION = '", "hankitab-v002", "';", "hankitab-<sha1 of index.html, 10 hex>", 'cache name set automatically by make_app.py'),
 ]
 DO = [  # (index, what, [(iteration, result)], record)
@@ -115,6 +117,7 @@ DO = [  # (index, what, [(iteration, result)], record)
  ("DO010", "live page test, v002 (GitHub Pages, built-in browser)", [("1", "status: Connected, no key box"), ("2", "Ask failed: null template -> T044"), ("3", "no passages -> T045"), ("4", "answer citing the report"), ("5", "Search Black Stone: 11"), ("6", "7 downloads: 200"), ("7", "no Claude/Anthropic in the page")], "records/08_live_v002_test_v001.md"),
  ("DO011", "own chat key", [("1", "HanKitab/apikey stored, owner-only"), ("2", "open chat answered using it")], "records/09_own_chat_key_v001.md"),
  ("DO012", "kernel notebook tests (v003 cells, run in the local kernel)", [("1", "status"), ("2", "chat in Chinese"), ("3", "code with secret")], "records/10_kernel_notebook_tests_v001.md"),
+ ("DO013", "History tab and source labels", [("1", "headless: History renders sections 1, 2, 3, 7, 8 with contents"), ("2", "live: Ask on the Black Stone credits Mason's footnote")], "records/11_history_tab_v001.png"),
  ("DO008", "facsimile PDF build", [("1", "img2pdf from PNG: 297 pp., 18.0 MB"), ("2", "CCITT G4 TIFF: 297 pp., 10.7 MB")], "texts/TianfangZhishengShilu_1924_facsimile_v001.pdf"),
 ]
 cells = [cell("Han Kitab · Operations Log v002", "Title"),

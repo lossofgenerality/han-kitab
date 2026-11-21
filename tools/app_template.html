@@ -142,6 +142,7 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
   <nav class="tabs" role="tablist">
     <button role="tab" data-v="library" aria-selected="true">Library</button>
     <button role="tab" data-v="read" aria-selected="false">Read</button>
+    <button role="tab" data-v="history" aria-selected="false">History</button>
     <button role="tab" data-v="search" aria-selected="false">Search</button>
     <button role="tab" data-v="ask" aria-selected="false">Ask</button>
     <button role="tab" data-v="downloads" aria-selected="false">Downloads</button>
@@ -179,6 +180,16 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
         </div>
         <article class="text" id="doc"></article>
       </div>
+    </div>
+  </section>
+
+  <!-- HISTORY -->
+  <section class="view" id="v-history">
+    <h1 class="page">History of the Han Kitab</h1>
+    <p class="lede">From the first Muslims in Tang China to the Han Kitab books (1642 onwards) and the Sinification of Islam today. From the Computational Classnotes research report (v001, November 2026); the full report, with the catalogue of publications, glossary and sources, is in the Library.</p>
+    <div class="reader">
+      <nav class="toc card" id="htoc" aria-label="History contents"></nav>
+      <article class="text" id="hist"></article>
     </div>
   </section>
 
@@ -246,7 +257,8 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
     { id: 'mason', tpl: 'doc-mason', title: 'The Arabian Prophet', zh: '天方至聖實錄', by: 'Liu Zhi 劉智 · trans. Isaac Mason (1921)',
       blurb: 'The first English version of Liu Zhi’s life of the Prophet (completed 1724), with Mason’s appendices on Chinese Islam and all twenty original illustrations. Choose “English + 中文” to read it beside the Chinese pages.',
       tags: ['English', '1921 · public domain', 'beside the Chinese pages'],
-      pdf: 'texts/ArabianProphet_Mason1921_v001.pdf', md: 'texts/ArabianProphet_Mason1921_v001.md' },
+      pdf: 'texts/ArabianProphet_Mason1921_v001.pdf', md: 'texts/ArabianProphet_Mason1921_v001.md',
+      source: 'Isaac Mason, The Arabian Prophet (Shanghai, 1921): his English translation of Liu Zhi’s 天方至聖實錄 (1724). The footnotes, preface and appendices are Mason’s own; the main text is Liu Zhi’s in Mason’s translation.' },
     { id: 'facs', facs: true, title: 'Tianfang zhisheng shilu (1924)', zh: '天方至聖實錄', by: 'Liu Zhi 劉智 · prefaces and juan 1–10 · facsimile',
       blurb: 'The Chinese original, page by page as printed in 1924: every page reproduced unchanged, with a contents list by juan.',
       tags: ['中文', 'original pages, unchanged', '297 pages'],
@@ -254,7 +266,8 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
     { id: 'report', tpl: 'doc-report', title: 'Han Kitab: research report', zh: '漢克塔布研究', by: 'Computational Classnotes · v001 (2026)',
       blurb: 'What the Han Kitab is, a catalogue of the publications, Chinese passages beside English, and a history of Sinification from 1642 to today.',
       tags: ['English + 中文 passages', 'Research'],
-      pdf: 'docs/HanKitab_Research_v001.pdf', md: 'docs/HanKitab_Research_v001.md' }
+      pdf: 'docs/HanKitab_Research_v001.pdf', md: 'docs/HanKitab_Research_v001.md',
+      source: 'Computational Classnotes, Han Kitab research report v001 (November 2026).' }
   ];
   const books = $('#books'), docSel = $('#docSel');
   DOCS.forEach((d) => {
@@ -271,6 +284,7 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
     $$('nav.tabs [role=tab]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.v === v)));
     $$('section.view').forEach((s) => s.classList.toggle('on', s.id === 'v-' + v));
     if (v === 'read' && !current) openDoc('mason', true);
+    if (v === 'history') renderHistory();
     try { history.replaceState(null, '', '#' + v + (v === 'read' && current ? '/' + current : '')); } catch (e) {}
   }
   $$('nav.tabs [role=tab]').forEach((b) => b.onclick = () => show(b.dataset.v));
@@ -395,6 +409,24 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
       `<a class="btn${f.primary ? ' primary' : ''}" href="${f.href}" download>${f.label} · ${f.size}</a>`).join('')}</div>`;
     dlEl.appendChild(row);
   });
+
+  /* ---------- history (from the research report) ---------- */
+  const HIST = ['what-the-han-kitab-is', 'background-muslims-in-china-before-the-han-kitab', 'the-scripture-hall-movement-and-the-birth-of-the-corpus',
+    'sinification-and-the-han-kitab-a-history-from-the-first-publication-to-2026', 'scholarly-debates'];
+  let histDone = false;
+  function renderHistory() {
+    if (histDone) return; histDone = true;
+    const h = document.createElement('div'); h.appendChild(document.getElementById('doc-report').content.cloneNode(true));
+    const secs = sectionsOf(h), hist = $('#hist'), htoc = $('#htoc');
+    htoc.innerHTML = '<div style="font:600 12px var(--sans);color:var(--muted);padding:4px 8px">HISTORY</div>';
+    HIST.forEach((id) => {
+      const s = secs.find((x) => x.id === id); if (!s) return;
+      const w = document.createElement('div'); w.className = 'sec'; s.nodes.forEach((n) => w.appendChild(n)); hist.appendChild(w);
+      const t = s.title.replace(/^\d+\.\s*/, '');
+      const a = document.createElement('a'); a.href = '#'; a.textContent = t; a.onclick = (e) => { e.preventDefault(); w.scrollIntoView({ behavior: 'smooth' }); }; htoc.appendChild(a);
+      w.querySelectorAll('h3').forEach((h3) => { const b = document.createElement('a'); b.href = '#'; b.textContent = '· ' + h3.textContent; b.style.paddingLeft = '18px'; b.onclick = (e) => { e.preventDefault(); h3.scrollIntoView({ behavior: 'smooth' }); }; htoc.appendChild(b); });
+    });
+  }
 
   docSel.onchange = () => openDoc(docSel.value);
   $$('#langSeg button').forEach((b) => b.onclick = () => { lang = b.dataset.l; try { localStorage.setItem('hk.lang', lang); } catch (e) {} render(); });
@@ -528,7 +560,7 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
       return;
     }
     const wait = addMsg('bot wait', 'Reading the texts…');
-    const ctx = hits.map((h, i) => `[${i + 1}] ${DOCS.find((d) => d.id === h.doc).title} · ${h.title}: ${h.t.slice(0, 900)}`).join('\n\n');
+    const ctx = hits.map((h, i) => { const d = DOCS.find((x) => x.id === h.doc); return `[${i + 1}] Source: ${d.source || d.title} Section: ${h.title}${/notes to p\./.test(h.t) ? ' (a footnote by Isaac Mason)' : ''}.\n${h.t.slice(0, 900)}`; }).join('\n\n');
     convo.push({ role: 'user', content: `Passages:\n${ctx || '(none found)'}\n\nQuestion: ${q}` });
     try {
       const j = await kernelCall({ mode: 'chat', payload_b64: b64enc(JSON.stringify({ max_tokens: 1500, system: PERSONA, messages: convo.slice(-8) })) });

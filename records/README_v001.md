@@ -12,5 +12,6 @@
 | 08_live_v002_test_v001.md | DO010: live page test of v002 |
 | 09_own_chat_key_v001.md | DO011: own chat key in use |
 | 10_kernel_notebook_tests_v001.md | DO012: kernel notebook tests fixed |
+| 11_history_tab_v001.png | DO013: History tab, headless screenshot |
 
 © Computational Classnotes · CC BY-NC-SA 4.0

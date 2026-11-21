@@ -13,6 +13,7 @@ One fixed address, always the current app: https://lossofgenerality.github.io/ha
 - **Read** — *The Arabian Prophet* in English, in English + 中文 (the Chinese pages of 天方至聖實錄 beside each chapter,
   opened at the matching juan), or 中文 alone; the 1924 facsimile page by page (◀ ▶, arrow keys, contents by juan);
   the research report. Text size, read aloud with the device's voices, PDF and Markdown links.
+- **History** — the history of the Han Kitab and of Sinification, from the research report (sections 1–3, 7, 8).
 - **Search** — every text at once, English or Chinese, offline.
 - **Ask** — questions about the Han Kitab, no key needed. Answers come through HanKitabKernel, which is given
   the most relevant passages; offline, the passages themselves are shown.
