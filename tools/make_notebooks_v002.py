@@ -103,6 +103,7 @@ T = [  # (index, file, u, x, v, y, why)
  ("T046", "tools/make_notebooks_v002.py (kernel tests)", "pl = BaseEncode[", 'StringToByteArray[ExportString[..., "RawJSON", ...]]', "];", 'ExportByteArray[..., "RawJSON", ...]', 'test failed in the notebook: u and secret were defined in another cell, and the Chinese question was UTF-8 encoded twice; each test cell is now self-contained (HanKitabKernel_v003.nb)'),
  ("T047", "tools/app_template.html", "const ctx = hits.map((h, i) => `[${i + 1}] ", "${title} · ${section}", ": ${text}`", "Source: <full source line> Section: <section> (a footnote by Isaac Mason).", 'Ask was unsure whether a footnote was Mason\'s; each passage now carries its source'),
  ("T048", "tools/app_template.html", 'data-v="search"', '', '', 'History tab: sections 1, 2, 3, 7 and 8 of the research report, with its own contents list', 'editor: add the history research to the site'),
+ ("T049", "tools/app_template.html", "wait.", "textContent = t.trim();", " wait.className", "innerHTML = esc(t) with **bold**, *italic* and # headings rendered", 'answers showed raw ** marks (DO013[2])'),
  ("T042", "sw.js", "const VERSION = '", "hankitab-v002", "';", "hankitab-<sha1 of index.html, 10 hex>", 'cache name set automatically by make_app.py'),
 ]
 DO = [  # (index, what, [(iteration, result)], record)

@@ -567,7 +567,8 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
       if (j.error) throw new Error(j.error);
       let t = b64dec(j.text_b64 || '');
       try { const o = JSON.parse(t); t = o.reply || (o.content && o.content[0] && o.content[0].text) || t; } catch (e2) {}
-      wait.textContent = t.trim(); wait.className = 'msg bot'; convo.push({ role: 'assistant', content: t.trim() });
+      wait.innerHTML = esc(t.trim()).replace(/\*\*([^*\n]+)\*\*/g, '<b>$1</b>').replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<i>$2</i>').replace(/^#{1,4}\s*(.+)$/gm, '<b>$1</b>');
+      wait.className = 'msg bot'; convo.push({ role: 'assistant', content: t.trim() });
     } catch (err) { wait.textContent = 'The cloud connection failed: ' + err.message; wait.className = 'msg bot'; convo.pop(); }
   };
 
