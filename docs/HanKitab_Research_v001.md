@@ -298,7 +298,7 @@ Ma Zhu argues for a Creator by analogy with made things: why do drums not give b
 - **The Han Kitab began from below.** Wang Daiyu, Ma Zhu and Liu Zhi wrote to save Islamic knowledge among Muslims who had lost Arabic and Persian. They used Confucian language because it was the language of learning, not because the state required it.
 - **It also served as a political argument.** By showing that Islam teaches loyalty to the ruler and filial piety, the authors argued that Muslims belonged in the empire. The 1782 Qianlong ruling shows the argument worked at the highest level.
 - **It never meant giving up Islam.** Liu Zhi and Ma Zhu insist that only Islam knows the True Lord and that Confucianism lacks the knowledge of the Creator. The synthesis is "Islam in Chinese", not "Islam into Confucianism".
-- **Modern state Sinicization is a different thing.** Since 2015 the PRC has used the Han Kitab as a historical precedent, but the 2018 plan concerns party leadership, architecture, education and supervision, imposed from above. Scholars such as David Stroup describe its aim as greater state supervision; some critics call it an erasure of Muslim identity.
+- **Modern state Sinicization is a different thing.** Since 2015 the PRC has used the Han Kitab as a historical precedent, but the 2018 plan concerns party leadership, architecture, education and supervision, imposed from above.
 
 ---
 
@@ -308,7 +308,7 @@ Ma Zhu argues for a Creator by analogy with made things: why do drums not give b
 2. **Confucian or Sufi?** Murata and Chittick show that the metaphysics is largely from the Persian Sufi tradition of Ibn ʿArabī's school (Jāmī, Nasafī, Rāzī), dressed in Neo-Confucian terms. Petersen (*Interpreting Islam in China*, 2017) traces how the tradition moved from Wang Daiyu's polemic through Liu Zhi's synthesis to Ma Dexin's re-Arabization.
 3. **Was it read by non-Muslims?** It was written partly for Confucian readers, and some Han literati wrote prefaces, but the *Siku quanshu* editors dismissed Liu Zhi's *Tianfang dianli*. Most readers were Muslims.
 4. **The 19th-century turn.** Ma Dexin and Ma Lianyuan, having studied in the Middle East, wrote in Arabic as well as Chinese and stressed direct access to Arabic sources. Republican-era reformers (Yihewani) sometimes criticized the Confucian vocabulary, while others (Ma Fuxiang, Hu Songshan) defended it.
-5. **Current politics.** Whether the Han Kitab can be a model for Islam in today's China is contested: the state promotes it; Hui scholars use it to claim a legitimate place; critics see its use as cover for repression.
+5. **Current politics.** Whether the Han Kitab can be a model for Islam in today's China is contested: the state promotes it; Hui scholars use it to claim a legitimate place.
 
 ---
 
