@@ -115,6 +115,7 @@ article.text mark{background:#F3DE9B;color:inherit;border-radius:3px}
 .hero figure{margin:0}
 .hero figure img{width:100%;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.18);display:block}
 .hero figcaption{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.35}
+.hero figcaption a{color:var(--accent)}
 .ghead{position:relative;border-radius:18px;overflow:hidden;margin-bottom:16px;min-height:220px;display:flex;align-items:flex-end;background:#1F5C4F}
 .ghead img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
 .ghead .gt{position:relative;padding:22px 26px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.5)}
@@ -200,8 +201,9 @@ footer.ccn{max-width:1180px;margin:0 auto;padding:16px;color:var(--muted);font-s
         <p>Islamic books written in Classical Chinese by Chinese Muslims, from Wang Daiyu’s <i>Zhengjiao zhenquan</i> (1642) to the late Qing: Islam explained in the language of the Confucian classics.</p>
         <p>Read Liu Zhi’s life of the Prophet in Chinese beside Isaac Mason’s English, follow the history, browse the gallery of China’s mosques and Muslim quarters, and download every text.</p>
       </div>
-      <figure><img src="img/cover_TianfangZhengxue_1861.jpg" alt="Page of 天方正學 with the basmala and the alif figure">
-        <figcaption>天方字母爾立甫立圖, the letter alif as the human form. Lan Zixi 藍煦, <i>Tianfang zhengxue</i> 天方正學 (1861). The University of Manchester Library, Chinese Crawford 326, CC BY-NC-SA 4.0.</figcaption></figure>
+      <figure><a href="img/cover_TianfangZhengxue_1861.jpg" id="coverLink" title="View the full-size image"><img src="img/cover_TianfangZhengxue_1861.jpg" alt="Page of 天方正學 with the basmala and the alif figure" style="cursor:zoom-in"></a>
+        <figcaption>天方字母爾立甫立圖, the letter alif as the human form. Lan Zixi 藍煦, <i>Tianfang zhengxue</i> 天方正學 (1861). The University of Manchester Library, Chinese Crawford 326, CC BY-NC-SA 4.0.
+        <br><a href="img/cover_TianfangZhengxue_1861.jpg" target="_blank" rel="noopener">Full size</a> · <a href="img/cover_TianfangZhengxue_1861_original.jpg" target="_blank" rel="noopener">original photograph with colour chart</a></figcaption></figure>
     </div>
     <h1 class="page">Library</h1>
     <div class="grid" id="books"></div>
@@ -10911,6 +10913,7 @@ Islam in China”.</li>
   $('#smaller').onclick = () => setFs(fs - 1); $('#larger').onclick = () => setFs(fs + 1);
   function setFs(v) { fs = Math.max(14, Math.min(28, v)); document.documentElement.style.setProperty('--fs', fs + 'px'); try { localStorage.setItem('hk.fs', fs); } catch (e) {} }
   $('#lb').onclick = () => $('#lb').classList.remove('on');
+  $('#coverLink').onclick = (e) => { e.preventDefault(); const lb = $('#lb'); lb.firstElementChild.src = 'img/cover_TianfangZhengxue_1861.jpg'; lb.classList.add('on'); };
 
   /* ---------- read aloud (browser voices) ---------- */
   const VC = window.HANKITAB_VOICE || {}, synth = window.speechSynthesis;

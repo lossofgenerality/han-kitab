@@ -20,6 +20,7 @@
 | `gallery/photo_01–45.jpg`, `thumb_01–45.jpg` | v001 | gallery photographs (Wikimedia Commons) |
 | `gallery/gallery_v001.json`, `gallery/CREDITS_v001.md` | v001 | captions, authors, licences |
 | `img/cover_TianfangZhengxue_1861.jpg` (+ metadata .txt) | v001 | cover art, Manchester Library CC BY-NC-SA 4.0 |
+| `img/cover_TianfangZhengxue_1861_original.jpg` | — | the Manchester photograph as received, with colour chart |
 | `tools/make_gallery_v001.py` | v001 | gallery build |
 | `tools/make_mason_v001.py, spellfix_mason_v001.py, mason_book_v001.css` | v001 | Mason edition build |
 | `tools/clean_zh_pages_v001.py, zh_facsimile_front_v001.html` | v001 | facsimile build |

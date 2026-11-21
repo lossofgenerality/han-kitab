@@ -109,6 +109,7 @@ T = [  # (index, file, u, x, v, y, why)
  ("T052", "tools/app_template.html", '<h1 class="page">Library</h1>', '', '', 'hero with the 天方正學 (1861) alif page as cover art and credit line', 'editor: cover art from the Manchester page'),
  ("T053", "tools/make_app.py", '.replace("__DLDATA__", ...)', '', '', '\n.replace("__GALDATA__", gallery/gallery_v001.json)', 'gallery data embedded in index.html'),
  ("T054", "tools/app_template.html", '.hero figure{margin:0', ';transform:rotate(1.5deg)', '}', '', 'editor: the cover art looked crooked; tilt removed (caption counter-tilt removed too)'),
+ ("T055", "tools/app_template.html", '<figure>', '', '<img src="img/cover_...">', '<a id="coverLink" href="img/cover_TianfangZhengxue_1861.jpg"> + caption links: Full size · original photograph with colour chart', 'editor: a link to the larger image; the cover also opens full size on tap'),
  ("T042", "sw.js", "const VERSION = '", "hankitab-v002", "';", "hankitab-<sha1 of index.html, 10 hex>", 'cache name set automatically by make_app.py'),
 ]
 DO = [  # (index, what, [(iteration, result)], record)
