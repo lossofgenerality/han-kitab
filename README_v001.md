@@ -50,7 +50,7 @@ Logs: `wolfram/HanKitabOperationsLog_v001.nb` ((T) rewrites, (DO) runs), `wolfra
 
 ## Credits
 
-Principal Investigator Lucval · Oversight Directorate Zil · Editors Dara, Lucia, Zil · Software FreeFormer ·
-Agent Kirari-chan (キラリちゃん) · Programming: Hikari Noor Hoshino (星野ヌール), AI System Programmer.
+Principal Investigator Lucval · Editors Dara, Lucia · Software FreeFormer ·
+Agent Kirari-chan (キラリちゃん) · Programming: Hikari Noor Hoshino (星野ヌール), AI System Programming Group.
 
 © Computational Classnotes · CC BY-NC-SA 4.0. The 1724 text, the 1921 translation and the 1924 printing are in the public domain.
